@@ -1,0 +1,37 @@
+{
+  "name": "mcp-8thwall",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server for 8th Wall (docs or API modes)",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": "Dwayne Paisley-Marshall",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superdwayne/8thwallmcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/superdwayne/8thwallmcp/issues"
+  },
+  "homepage": "https://github.com/superdwayne/8thwallmcp#readme",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "http": "node dist/http.js",
+    "dev:http": "node --loader ts-node/esm src/http.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.7.5"
+  }
+}
