@@ -1,0 +1,46 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract release notes from CHANGELOG
+        id: notes
+        shell: bash
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          VERSION="${TAG_NAME#v}"
+          START_LINE=$(grep -nE "^## +${VERSION}( |$)" CHANGELOG.md | head -n1 | cut -d: -f1 || true)
+          if [ -z "$START_LINE" ]; then
+            echo "No changelog section for $VERSION; using generic body" >&2
+            printf "Release %s\n\nNo matching section in CHANGELOG.md." "$TAG_NAME" > RELEASE_NOTES.md
+          else
+            # Find next section start or EOF
+            TOTAL_LINES=$(wc -l < CHANGELOG.md)
+            NEXT_LINE=$(tail -n +$((START_LINE+1)) CHANGELOG.md | grep -nE "^## +" | head -n1 | cut -d: -f1 || true)
+            if [ -z "$NEXT_LINE" ]; then
+              END_LINE=$TOTAL_LINES
+            else
+              END_LINE=$((START_LINE + NEXT_LINE - 2))
+            fi
+            sed -n "${START_LINE},${END_LINE}p" CHANGELOG.md > RELEASE_NOTES.md
+          fi
+          echo "notes_file=RELEASE_NOTES.md" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release (draft)
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          draft: true
+          body_path: ${{ steps.notes.outputs.notes_file }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

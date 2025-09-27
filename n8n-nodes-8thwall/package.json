@@ -1,0 +1,50 @@
+{
+  "name": "n8n-nodes-8thwall",
+  "version": "1.0.0",
+  "description": "n8n nodes for 8th Wall MCP HTTP bridge",
+  "author": "Dwayne Paisley-Marshall",
+  "license": "MIT",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n-nodes",
+    "8thwall",
+    "mcp",
+    "xr"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superdwayne/npm-8thwall.git"
+  },
+  "bugs": { "url": "https://github.com/superdwayne/npm-8thwall/issues" },
+  "homepage": "https://github.com/superdwayne/npm-8thwall#readme",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "nodes": [
+      "dist/nodes/EighthWall/EighthWall.node.js"
+    ],
+    "credentials": [
+      "dist/credentials/EightWallBridgeApi.credentials.js"
+    ]
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "n8n-workflow": "^1.0.0"
+  }
+}
