@@ -2,19 +2,33 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 
+import { getProjectRoot, isLikelyDesktopProject } from "../utils/projectRoot.js";
+
 type Server = any;
 
-function projectRoot(): string {
-  return process.env.PROJECT_ROOT || path.resolve(process.cwd(), "project");
+function isDesktopProject(): boolean {
+  try {
+    const root = getProjectRoot();
+    return isLikelyDesktopProject(root);
+  } catch {
+    return false;
+  }
+}
+
+function desktopGuardMessage(): { content: [{ type: "text"; text: string }] } | null {
+  if (!isDesktopProject()) return null;
+  const root = getProjectRoot();
+  const text = `Detected 8th Wall Desktop project at ${root}. Web scene tools (scene_*) operate on index.html/main.js and are disabled. Use desktop_* tools instead (e.g., desktop_read_json, desktop_patch_json, desktop_add_entity_best_effort).`;
+  return { content: [{ type: "text", text }] };
 }
 
 async function readFileText(rel: string): Promise<string> {
-  const full = path.resolve(projectRoot(), rel);
+  const full = path.resolve(getProjectRoot(), rel);
   return await fs.readFile(full, "utf-8");
 }
 
 async function writeFileText(rel: string, content: string): Promise<void> {
-  const full = path.resolve(projectRoot(), rel);
+  const full = path.resolve(getProjectRoot(), rel);
   await fs.writeFile(full, content, "utf-8");
 }
 
@@ -64,9 +78,23 @@ export function registerSceneTools(server: Server) {
     "scene_detect_engine",
     "Detect whether the project uses A-Frame or Three.js",
     async () => {
-      const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
-      return { content: [{ type: "json", json: { engine } }] };
+      if (isDesktopProject()) {
+        return { content: [{ type: "json", json: { engine: "desktop" } }] };
+      }
+      try {
+        const html = await readFileText("index.html");
+        const engine = detectEngineFromIndexHtml(html);
+        return { content: [{ type: "json", json: { engine } }] };
+      } catch (err: any) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `index.html not found under ${getProjectRoot()}. If this is an 8th Wall Desktop project, treat the engine as 'desktop'. Otherwise scaffold a web project with project_scaffold.`
+            }
+          ]
+        };
+      }
     }
   );
 
@@ -81,6 +109,8 @@ export function registerSceneTools(server: Server) {
       scale: z.array(z.number()).length(3).optional()
     },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const src = String(args.src);
@@ -117,6 +147,8 @@ export function registerSceneTools(server: Server) {
     "Set scene background color",
     { color: z.string() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const color = String(args.color);
       let html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
@@ -155,6 +187,8 @@ export function registerSceneTools(server: Server) {
       scale: z.array(z.number()).length(3).optional()
     },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const type = args.type as "box" | "sphere" | "cylinder" | "plane";
@@ -212,6 +246,8 @@ export function registerSceneTools(server: Server) {
       position: z.array(z.number()).length(3).optional()
     },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const kind = args.kind as "ambient" | "hemisphere" | "directional" | "point";
@@ -254,6 +290,8 @@ export function registerSceneTools(server: Server) {
     "Set environment using an HDR/EXR URL",
     { url: z.string(), applyBackground: z.boolean().optional() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const url = String(args.url);
@@ -294,6 +332,8 @@ export function registerSceneTools(server: Server) {
     "Add a simple spin animation to meshes (Three) or an A-Frame animation entity",
     { type: z.enum(["spin"]).optional(), speed: z.number().optional() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const speed = Number(args.speed ?? 0.01);
@@ -331,6 +371,8 @@ export function registerSceneTools(server: Server) {
     "Add a textured plane (e.g., for backgrounds/posters)",
     { url: z.string(), width: z.number().optional(), height: z.number().optional(), position: z.array(z.number()).length(3).optional(), rotation: z.array(z.number()).length(3).optional() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       const url = String(args.url);
@@ -373,6 +415,8 @@ export function registerSceneTools(server: Server) {
     "scene_add_orbit_controls",
     "Add OrbitControls to Three.js scene",
     async () => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       if (engine !== "three") return { content: [{ type: "text", text: "OrbitControls only available for Three.js template." }] };
@@ -403,6 +447,8 @@ export function registerSceneTools(server: Server) {
     "Add a GridHelper to the scene (Three.js)",
     { size: z.number().optional(), divisions: z.number().optional() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       if (engine !== "three") return { content: [{ type: "text", text: "GridHelper only for Three.js template." }] };
@@ -426,6 +472,8 @@ export function registerSceneTools(server: Server) {
     "Add a simple floor plane (Three.js)",
     { size: z.number().optional(), color: z.string().optional() },
     async (args: any) => {
+      const desktop = desktopGuardMessage();
+      if (desktop) return desktop;
       const html = await readFileText("index.html");
       const engine = detectEngineFromIndexHtml(html);
       if (engine !== "three") return { content: [{ type: "text", text: "Floor only for Three.js template." }] };

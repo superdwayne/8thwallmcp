@@ -3,18 +3,16 @@ import path from "node:path";
 import { execFile } from "node:child_process";
 import { z } from "zod";
 
-type Server = any;
+import { getProjectRoot } from "../utils/projectRoot.js";
 
-function projectRoot(): string {
-  return process.env.PROJECT_ROOT || path.resolve(process.cwd(), "project");
-}
+type Server = any;
 
 async function ensureDir(p: string) {
   await fs.mkdir(p, { recursive: true });
 }
 
 function assetsDir(): string {
-  return path.join(projectRoot(), "assets");
+  return path.join(getProjectRoot(), "assets");
 }
 
 export function registerAssetTools(server: Server) {
@@ -110,7 +108,7 @@ export function registerAssetTools(server: Server) {
       await ensureDir(dir);
       const dest = path.join(dir, name);
       await fs.writeFile(dest, buf);
-      return { content: [{ type: "json", json: { path: path.relative(projectRoot(), dest), bytes: buf.length } }] };
+      return { content: [{ type: "json", json: { path: path.relative(getProjectRoot(), dest), bytes: buf.length } }] };
     }
   );
 
@@ -122,7 +120,7 @@ export function registerAssetTools(server: Server) {
     "Unzip a .zip file into project assets directory",
     { zipPath: z.string(), destDir: z.string().optional() },
     async (args: any) => {
-      const root = projectRoot();
+      const root = getProjectRoot();
       const zipRel = String(args.zipPath);
       const destRel = String(args.destDir || path.join("assets", "models", path.basename(zipRel, ".zip")));
       const zipFull = path.isAbsolute(zipRel) ? zipRel : path.join(root, zipRel);

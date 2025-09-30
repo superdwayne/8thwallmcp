@@ -104,13 +104,37 @@ End-to-end quick test
 
 If the preview doesn’t open on `localhost`, use `http://127.0.0.1:5173/`.
 
-8th Wall Desktop App integration
+- 8th Wall Desktop App integration
 
-- The Desktop App stores projects under `~/Documents/8th Wall/<YourProject>` by default.
+- The Desktop App typically stores projects under `~/Documents/8th-Wall/<YourProject>` (some installations use `~/Documents/8th Wall`).
+- If `PROJECT_ROOT` is not set, the server now auto-detects the first Desktop project under `EIGHTHWALL_DESKTOP_ROOT` (or the default Documents folder) by looking for `.expanse.json`/`spaces/` markers. Set `PROJECT_ROOT` explicitly if you need a different project.
 - You can point the MCP server to a Desktop project so all edits reflect in the app:
   - Option A (config): set `PROJECT_ROOT` to the project path in your MCP client env.
   - Option B (tools): use `desktop_list_projects` to discover paths, then `desktop_set_project` with a folder name, or `project_set_root` with the full path. Confirm with `project_get_root`.
-- After setting the root, use the same scene and asset tools (`scene_*`, `assets_*`, `project_*`). The Desktop app typically detects file changes; if not, hit its refresh/build button.
+- After setting the root, you can still use project- and asset-level helpers (`project_*`, `assets_*`). Scene helpers automatically switch to the Desktop JSON tooling when a Desktop project is detected.
+- When a Desktop project is active, traditional web scene tools (`scene_*`) are disabled and will point you toward the Desktop-specific JSON helpers instead. Use the `desktop_*` family for scene edits.
+
+Desktop JSON scene config helpers
+
+- `desktop_guess_scene`: Scan `PROJECT_ROOT` for likely scene/config JSON files (heuristics).
+- `desktop_read_json`: Read a JSON file; optionally return a value at a JSON Pointer (e.g., `/scenes/0/entities`).
+- `desktop_patch_json`: Apply best-effort JSON patches with operations: `set`, `remove`, `push`, `merge` using JSON Pointers.
+- `desktop_find_arrays`: Locate arrays commonly used for scene contents (e.g., `entities`, `nodes`, `objects`, `scenes`, `spaces`, `children`).
+- `desktop_add_entity_best_effort`: Insert an object into the first suitable array (or a preferred pointer) and save, with optional backup.
+
+Basic workflow for Desktop configs
+
+- Point tools at your Desktop project: `desktop_set_project` or `project_set_root`.
+- Discover config candidates: `desktop_guess_scene`.
+- Inspect a file: `desktop_read_json` with optional `pointer`.
+- Identify insertion targets: `desktop_find_arrays` on the chosen file.
+- Patch or add content:
+  - Use `desktop_patch_json` to set/merge/remove values via JSON Pointers.
+  - Or use `desktop_add_entity_best_effort` to push an object into a likely array.
+
+Notes
+
+- These JSON tools are schema-agnostic and operate on your actual Desktop app files. If you share a sample of your scene config, we can add schema-aware helpers (e.g., typed node/component constructors).
 
 Environment variables
 

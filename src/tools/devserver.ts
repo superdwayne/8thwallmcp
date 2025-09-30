@@ -4,15 +4,13 @@ import fscb from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 
+import { getProjectRoot } from "../utils/projectRoot.js";
+
 type Server = any;
 
 let server: http.Server | null = null;
 let serverPort = 0;
 let rootDir = "";
-
-function projectRoot(): string {
-  return process.env.PROJECT_ROOT || path.resolve(process.cwd(), "project");
-}
 
 function contentType(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
@@ -60,7 +58,7 @@ export function registerDevServerTools(serverApi: Server) {
         return { content: [{ type: "json", json: { url: `http://localhost:${serverPort}/`, port: serverPort, root: rootDir, running: true } }] };
       }
       const port = Number(args?.port || 5173);
-      const root = projectRoot();
+      const root = getProjectRoot();
       rootDir = root;
       await fs.mkdir(root, { recursive: true });
 

@@ -1,28 +1,25 @@
 import fs from "node:fs/promises";
+import { accessSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { execFile } from "node:child_process";
 import os from "node:os";
 
-type Server = any;
+import { getProjectRoot, resetCachedProjectRoot } from "../utils/projectRoot.js";
 
-function projectRoot(): string {
-  const root = process.env.PROJECT_ROOT || path.resolve(process.cwd(), "project");
-  return root;
-}
+type Server = any;
 
 function desktopBaseDir(): string {
   if (process.env.EIGHTHWALL_DESKTOP_ROOT) return process.env.EIGHTHWALL_DESKTOP_ROOT;
   const home = os.homedir();
   const a = path.join(home, "Documents", "8th Wall");
   const b = path.join(home, "Documents", "8th-Wall");
-  try { const stA = fs.stat(a); } catch {}
-  // Prefer the path that exists
-  return (fscExistsSync(a) ? a : (fscExistsSync(b) ? b : a));
+  // Prefer the path that exists (supports both "8th Wall" and "8th-Wall")
+  return (fscExistsSync(b) ? b : (fscExistsSync(a) ? a : b));
 }
 
 function fscExistsSync(p: string): boolean {
-  try { require("node:fs").accessSync(p); return true; } catch { return false; }
+  try { accessSync(p); return true; } catch { return false; }
 }
 
 async function ensureDir(p: string) {
@@ -30,7 +27,7 @@ async function ensureDir(p: string) {
 }
 
 function resolvePathStrict(relPath: string): string {
-  const root = projectRoot();
+  const root = getProjectRoot();
   const full = path.resolve(root, relPath);
   const rel = path.relative(root, full);
   if (rel === "" || rel.startsWith("..") || path.isAbsolute(rel)) {
@@ -60,7 +57,7 @@ export function registerProjectTools(server: Server) {
     "project_get_root",
     "Return the current PROJECT_ROOT used by tools",
     async () => {
-      const data = { projectRoot: projectRoot() };
+      const data = { projectRoot: getProjectRoot() };
       return { content: [ { type: "text", text: JSON.stringify(data, null, 2) } ] };
     }
   );
@@ -75,6 +72,7 @@ export function registerProjectTools(server: Server) {
       const st = await fs.stat(candidate).catch(() => null);
       if (!st || !st.isDirectory()) throw new Error("Path does not exist or is not a directory");
       process.env.PROJECT_ROOT = candidate;
+      resetCachedProjectRoot(candidate);
       const data = { projectRoot: candidate };
       return { content: [ { type: "text", text: JSON.stringify(data, null, 2) } ] };
     }
@@ -83,7 +81,7 @@ export function registerProjectTools(server: Server) {
   // desktop_list_projects
   server.tool(
     "desktop_list_projects",
-    "List candidate 8th Wall Desktop project folders under ~/Documents/8th Wall",
+    "List candidate 8th Wall Desktop project folders under ~/Documents/8th-Wall (or 8th Wall)",
     async () => {
       const base = desktopBaseDir();
       const out: { name: string; path: string; likely: boolean; hints: { hasIndexRoot: boolean; hasIndexPublic: boolean; hasPackage: boolean } }[] = [];
@@ -111,7 +109,7 @@ export function registerProjectTools(server: Server) {
   // desktop_set_project: set PROJECT_ROOT to a child folder under Desktop root by name
   server.tool(
     "desktop_set_project",
-    "Set PROJECT_ROOT to ~/Documents/8th Wall/<name> (or EIGHTHWALL_DESKTOP_ROOT/<name>)",
+    "Set PROJECT_ROOT to ~/Documents/8th-Wall/<name> (or EIGHTHWALL_DESKTOP_ROOT/<name>; also supports '8th Wall')",
     { name: z.string() },
     async (args: any) => {
       const base = desktopBaseDir();
@@ -119,6 +117,7 @@ export function registerProjectTools(server: Server) {
       const st = await fs.stat(chosen).catch(() => null);
       if (!st || !st.isDirectory()) throw new Error(`Project folder not found: ${chosen}`);
       process.env.PROJECT_ROOT = chosen;
+      resetCachedProjectRoot(chosen);
       const data = { projectRoot: chosen };
       return { content: [ { type: "text", text: JSON.stringify(data, null, 2) } ] };
     }
@@ -128,7 +127,7 @@ export function registerProjectTools(server: Server) {
     "project_get_info",
     "Summarize project structure (files and folders) under PROJECT_ROOT",
     async () => {
-      const root = projectRoot();
+      const root = getProjectRoot();
       await ensureDir(root);
       const files = await listAllFiles(root);
       const stats = await Promise.all(
@@ -148,7 +147,7 @@ export function registerProjectTools(server: Server) {
     "List files under a subdirectory of PROJECT_ROOT",
     { dir: z.string().optional(), maxDepth: z.number().optional(), pattern: z.string().optional(), dirsOnly: z.boolean().optional() },
     async (args: any) => {
-      const root = projectRoot();
+      const root = getProjectRoot();
       await ensureDir(root);
       const dir = String(args?.dir || ".");
       const full = resolvePathStrict(dir);
@@ -238,7 +237,7 @@ export function registerProjectTools(server: Server) {
     "Create a minimal web XR app structure (index.html, main.js, styles.css)",
     { overwrite: z.boolean().optional(), template: z.enum(["aframe", "three"]).optional() },
     async (args: any) => {
-      const root = projectRoot();
+      const root = getProjectRoot();
       await ensureDir(root);
       const tmpl = (args?.template || "aframe") as "aframe" | "three";
 
@@ -278,7 +277,7 @@ export function registerProjectTools(server: Server) {
     "Export the project directory to a zip archive in the workspace",
     { outPath: z.string().optional() },
     async (args: any) => {
-      const root = projectRoot();
+      const root = getProjectRoot();
       const out = String(args.outPath || `project-export-${Date.now()}.zip`);
       const outFull = path.isAbsolute(out) ? out : path.resolve(process.cwd(), out);
       await new Promise<void>((resolve, reject) => {
