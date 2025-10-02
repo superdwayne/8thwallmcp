@@ -617,4 +617,200 @@ export function registerDesktopTools(server: Server) {
       return { content: [{ type: "text", text: "Face tracking enabled" }] };
     }
   );
+
+  // desktop_add_rotation_animation
+  server.tool(
+    "desktop_add_rotation_animation",
+    "Add rotation animation to an object by name",
+    {
+      objectName: z.string().describe("Name of the object to animate"),
+      axis: z.enum(["x", "y", "z"]).describe("Axis to rotate around"),
+      degreesPerSecond: z.number().optional().default(60).describe("Rotation speed in degrees per second"),
+      loop: z.boolean().optional().default(true).describe("Whether to loop the animation"),
+      reverse: z.boolean().optional().default(false).describe("Whether to reverse direction after each loop"),
+      easeIn: z.boolean().optional().default(false).describe("Ease in at start"),
+      easeOut: z.boolean().optional().default(false).describe("Ease out at end"),
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      
+      // Find object by name
+      const objectId = Object.keys(data.objects).find(id => 
+        data.objects[id].name === args.objectName
+      );
+      
+      if (!objectId) {
+        return { 
+          content: [{ type: "text", text: `Error: Object "${args.objectName}" not found` }],
+          isError: true 
+        };
+      }
+      
+      const obj = data.objects[objectId];
+      
+      // Calculate duration from speed
+      const duration = 360 / args.degreesPerSecond;
+      
+      // Create rotation animation attribute
+      const rotateAnimation = {
+        autoFrom: true,
+        toX: args.axis === 'x' ? 360 : 0,
+        toY: args.axis === 'y' ? 360 : 0,
+        toZ: args.axis === 'z' ? 360 : 0,
+        shortestPath: false,
+        duration: duration,
+        loop: args.loop,
+        reverse: args.reverse,
+        easeIn: args.easeIn,
+        easeOut: args.easeOut,
+        easingFunction: 'linear'
+      };
+      
+      // Add or update attributes
+      if (!obj.attributes) {
+        obj.attributes = {};
+      }
+      
+      obj.attributes.RotateAnimation = rotateAnimation;
+      
+      await writeExpanseJson(data);
+      
+      return { 
+        content: [{ 
+          type: "text", 
+          text: `✅ Added rotation animation to "${args.objectName}" (${args.degreesPerSecond}°/sec around ${args.axis}-axis, duration: ${duration.toFixed(2)}s)` 
+        }] 
+      };
+    }
+  );
+
+  // desktop_add_scale_animation
+  server.tool(
+    "desktop_add_scale_animation",
+    "Add scale (pulse/breathe) animation to an object by name",
+    {
+      objectName: z.string().describe("Name of the object to animate"),
+      minScale: z.number().optional().default(0.8).describe("Minimum scale multiplier (e.g., 0.8 = 80% of original size)"),
+      maxScale: z.number().optional().default(1.2).describe("Maximum scale multiplier (e.g., 1.2 = 120% of original size)"),
+      duration: z.number().optional().default(1).describe("Duration in seconds for one cycle"),
+      loop: z.boolean().optional().default(true).describe("Whether to loop the animation"),
+      reverse: z.boolean().optional().default(true).describe("Whether to reverse (breathe back down)"),
+      easeIn: z.boolean().optional().default(true).describe("Ease in at start"),
+      easeOut: z.boolean().optional().default(true).describe("Ease out at end"),
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      
+      // Find object by name
+      const objectId = Object.keys(data.objects).find(id => 
+        data.objects[id].name === args.objectName
+      );
+      
+      if (!objectId) {
+        return { 
+          content: [{ type: "text", text: `Error: Object "${args.objectName}" not found` }],
+          isError: true 
+        };
+      }
+      
+      const obj = data.objects[objectId];
+      
+      // Create scale animation attribute
+      const scaleAnimation = {
+        autoFrom: true,
+        toX: args.maxScale,
+        toY: args.maxScale,
+        toZ: args.maxScale,
+        duration: args.duration,
+        loop: args.loop,
+        reverse: args.reverse,
+        easeIn: args.easeIn,
+        easeOut: args.easeOut,
+        easingFunction: 'linear'
+      };
+      
+      // Add or update attributes
+      if (!obj.attributes) {
+        obj.attributes = {};
+      }
+      
+      obj.attributes.ScaleAnimation = scaleAnimation;
+      
+      await writeExpanseJson(data);
+      
+      return { 
+        content: [{ 
+          type: "text", 
+          text: `✅ Added scale animation to "${args.objectName}" (${args.minScale}x to ${args.maxScale}x over ${args.duration}s)` 
+        }] 
+      };
+    }
+  );
+
+  // desktop_set_model_animation
+  server.tool(
+    "desktop_set_model_animation",
+    "Set animation clip playback for a GLB/GLTF model",
+    {
+      modelName: z.string().describe("Name of the model object"),
+      animationClip: z.string().describe("Name of the animation clip to play (e.g., 'idle', 'walk', 'run')"),
+      loop: z.boolean().optional().default(true).describe("Whether to loop the animation"),
+      speed: z.number().optional().default(1).describe("Playback speed multiplier"),
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      
+      // Find model by name (check both prefab and instance)
+      const objectId = Object.keys(data.objects).find(id => 
+        data.objects[id].name === args.modelName
+      );
+      
+      if (!objectId) {
+        return { 
+          content: [{ type: "text", text: `Error: Model "${args.modelName}" not found` }],
+          isError: true 
+        };
+      }
+      
+      const obj = data.objects[objectId];
+      
+      // Check if this is a model object
+      if (!obj.gltfModel && !obj.instanceData) {
+        return { 
+          content: [{ type: "text", text: `Error: "${args.modelName}" is not a GLB/GLTF model` }],
+          isError: true 
+        };
+      }
+      
+      // Find the prefab if this is an instance
+      let targetObj = obj;
+      if (obj.instanceData && obj.instanceData.prefab) {
+        const prefabId = obj.instanceData.prefab;
+        if (data.objects[prefabId]) {
+          targetObj = data.objects[prefabId];
+        }
+      }
+      
+      // Set animation properties on the gltfModel
+      if (!targetObj.gltfModel) {
+        return { 
+          content: [{ type: "text", text: `Error: Could not find gltfModel on "${args.modelName}"` }],
+          isError: true 
+        };
+      }
+      
+      targetObj.gltfModel.animationClip = args.animationClip;
+      targetObj.gltfModel.loop = args.loop;
+      targetObj.gltfModel.speed = args.speed;
+      
+      await writeExpanseJson(data);
+      
+      return { 
+        content: [{ 
+          type: "text", 
+          text: `✅ Set animation "${args.animationClip}" on model "${args.modelName}" (loop: ${args.loop}, speed: ${args.speed}x)` 
+        }] 
+      };
+    }
+  );
 }

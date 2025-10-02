@@ -101,6 +101,12 @@ Use desktop_add_shape tool with parameters like:
 - `desktop_enable_face_tracking` - Enable face tracking
 - `desktop_guess_scene` - Find scene/config files
 
+### Animation Tools (NEW! 🎬)
+- `desktop_add_rotation_animation` - Spin objects around X/Y/Z axis
+- `desktop_add_scale_animation` - Pulse/breathe effects (scale animation)
+- `desktop_set_model_animation` - Control GLB model animation playback
+- **See `ANIMATIONS_GUIDE.md` for detailed examples and usage!**
+
 ### Scene Tools (for web projects)
 - `scene_detect_engine` - Detect if using A-Frame or Three.js
 - `scene_add_gltf_model` - Add 3D models
@@ -190,5 +196,7 @@ If you want to test changes quickly:
 - Check `README.md` for general information
 - Check `ELEMENT_ADDING_GUIDE.md` for 8th Wall Desktop specific info
 - Check `SIMPLE_CONFIG.md` for configuration details
+- Check `ANIMATIONS_GUIDE.md` for animation tools and examples 🎬
+- Check `ADDING_MODELS.md` for 3D model import details
 
 
