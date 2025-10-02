@@ -374,6 +374,7 @@ export function registerDesktopTools(server: Server) {
         case "cylinder":
           geometry.radius = ensureNumber(args.radius, 0.5);
           geometry.height = ensureNumber(args.height, 1);
+          geometry.radialSegments = ensureNumber(args.radialSegments, 32);
           break;
         case "plane":
           geometry.width = ensureNumber(args.width, 1);
@@ -386,14 +387,18 @@ export function registerDesktopTools(server: Server) {
         case "cone":
           geometry.radius = ensureNumber(args.radius, 0.5);
           geometry.height = ensureNumber(args.height, 1);
+          geometry.radialSegments = ensureNumber(args.radialSegments, 32);
           break;
         case "torus":
           geometry.radius = ensureNumber(args.radius, 0.5);
           geometry.tube = ensureNumber(args.tube, 0.2);
+          geometry.radialSegments = ensureNumber(args.radialSegments, 16);
+          geometry.tubularSegments = ensureNumber(args.tubularSegments, 100);
           break;
         case "ring":
           geometry.innerRadius = ensureNumber(args.innerRadius, 0.5);
           geometry.outerRadius = ensureNumber(args.outerRadius, 1);
+          geometry.thetaSegments = ensureNumber(args.radialSegments, 32);
           break;
       }
       
