@@ -402,11 +402,8 @@ export function registerDesktopTools(server: Server) {
       
       // Create material with proper validation
       const materialTypeInput = args.materialType || "basic";
-      // Capitalize material type for 8th Wall Desktop (Basic, Standard, Phong)
-      let materialType = materialTypeInput;
-      if (materialTypeInput.toLowerCase() === "basic") materialType = "Basic";
-      if (materialTypeInput.toLowerCase() === "standard") materialType = "Standard";
-      if (materialTypeInput.toLowerCase() === "phong") materialType = "Phong";
+      // Use lowercase material types (basic, standard, phong)
+      const materialType = materialTypeInput.toLowerCase();
       
       const material: any = {
         type: materialType,
@@ -414,7 +411,7 @@ export function registerDesktopTools(server: Server) {
       };
       
       // Add standard/phong material properties
-      if (materialType === "Standard" || materialType === "Phong") {
+      if (materialType === "standard" || materialType === "phong") {
         material.roughness = ensureNumber(args.roughness, 0.5);
         material.metalness = ensureNumber(args.metalness, 0.5);
       }
@@ -510,11 +507,11 @@ export function registerDesktopTools(server: Server) {
         }
       }
       
-      // Create the model object
+      // Create the model object (matching working 8th Wall Desktop structure)
       const modelId = `${args.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString(36)}`;
       const newModel: any = {
-        name: args.name,
         id: modelId,
+        name: args.name,
         position: ensureVec(args.position, [0, 0, 0]),
         rotation: ensureVec(args.rotation, [0, 0, 0, 1]),
         scale: ensureVec(args.scale, [1, 1, 1]),
@@ -529,7 +526,6 @@ export function registerDesktopTools(server: Server) {
           animationClip: args.animationClip || "",
           loop: args.loop !== false
         },
-        parentId: data.entrySpaceId,
         order: Date.now() / 1000000,
         prefab: true
       };
@@ -557,9 +553,34 @@ export function registerDesktopTools(server: Server) {
       
       data.objects[modelId] = newModel;
       
+      // Create an INSTANCE of the model (what actually appears in the scene)
+      const instanceId = `${modelId}-inst`;
+      const instance: any = {
+        id: instanceId,
+        position: newModel.position,
+        rotation: newModel.rotation,
+        scale: newModel.scale,
+        name: args.name,
+        instanceData: {
+          instanceOf: modelId,
+          deletions: {},
+          children: {}
+        },
+        parentId: data.entrySpaceId,
+        components: {}
+      };
+      
+      // Copy physics to instance if requested
+      if (args.addPhysics && newModel.collider) {
+        instance.collider = newModel.collider;
+        delete newModel.collider; // Remove from prefab, keep on instance
+      }
+      
+      data.objects[instanceId] = instance;
+      
       await writeExpanseJson(data);
       
-      return { content: [{ type: "text", text: `Added 3D model "${args.name}" (${args.assetPath}) to .expanse.json` }] };
+      return { content: [{ type: "text", text: `Added 3D model "${args.name}" (${args.assetPath}) with instance to .expanse.json` }] };
     }
   );
 
