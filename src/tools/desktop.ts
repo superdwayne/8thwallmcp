@@ -391,7 +391,7 @@ export function registerDesktopTools(server: Server) {
           break;
         case "torus":
           geometry.radius = ensureNumber(args.radius, 0.5);
-          geometry.tube = ensureNumber(args.tube, 0.2);
+          geometry.tubeRadius = ensureNumber(args.tube, 0.2);
           geometry.radialSegments = ensureNumber(args.radialSegments, 16);
           geometry.tubularSegments = ensureNumber(args.tubularSegments, 100);
           break;
