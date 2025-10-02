@@ -24,61 +24,43 @@ Example for Claude Desktop `mcpServers` in `config.json`:
   "mcpServers": {
     "8thwall": {
       "command": "node",
-      "args": ["dist/index.js"],
-      "env": {
-        "MODE": "local",
-        "PROJECT_ROOT": "./project"
-      }
+      "args": [
+        "/absolute/path/to/mcp-8thwall/dist/index.js"
+      ]
     }
   }
 }
 ```
 
-Optional environment variables you can add:
+**Note:** Replace `/absolute/path/to/mcp-8thwall/` with the actual path where you cloned this repo.
+
+Optional environment variables you can add in an `env` object:
 - `MODE`: `"local"` (default), `"docs"`, or `"api"`
+- `PROJECT_ROOT`: Path to your project (defaults to `./project`)
 - `EIGHTHWALL_BASE_URL`: `"https://www.8thwall.com"` (for API mode)
 - `EIGHTHWALL_DOCS_ROOT`: `"https://www.8thwall.com/docs/"` (for docs mode)
 - `EIGHTHWALL_API_KEY`: Your API key (for API mode only)
-
-Claude Desktop quick config (Local mode)
-
-Paste into Claude Desktop > Settings > Developer > Edit Config:
-
-```
-{
-  "mcpServers": {
-    "8thwall": {
-      "command": "node",
-      "args": ["dist/index.js"],
-      "env": {
-        "MODE": "local",
-        "PROJECT_ROOT": "./project"
-      }
-    }
-  }
-}
-```
 
 Cursor quick config
 
 - Global server: Settings → MCP → Add New Global MCP Server, then paste:
 
-```
+```json
 {
   "mcpServers": {
     "8thwall": {
       "command": "node",
-      "args": ["dist/index.js"],
-      "env": {
-        "MODE": "local",
-        "PROJECT_ROOT": "./project"
-      }
+      "args": [
+        "/absolute/path/to/mcp-8thwall/dist/index.js"
+      ]
     }
   }
 }
 ```
 
 - Project server: create `.cursor/mcp.json` in your project root with the same JSON.
+
+**Note:** Replace `/absolute/path/to/mcp-8thwall/` with the actual path where you cloned this repo.
 
 VS Code (MCP extension) quick steps
 
