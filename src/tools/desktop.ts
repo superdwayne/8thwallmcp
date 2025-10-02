@@ -157,8 +157,11 @@ function repairObject(obj: any): any {
     const mat = obj.material;
     if (!mat.type) mat.type = "basic";
     mat.color = ensureColor(mat.color, "#ffffff");
-    mat.roughness = ensureNumber(mat.roughness, 0.5);
-    mat.metalness = ensureNumber(mat.metalness, 0.5);
+    // Only add roughness/metalness for standard and phong materials
+    if (mat.type === "standard" || mat.type === "phong") {
+      mat.roughness = ensureNumber(mat.roughness, 0.5);
+      mat.metalness = ensureNumber(mat.metalness, 0.5);
+    }
     mat.opacity = ensureNumber(mat.opacity, 1);
     mat.emissiveIntensity = ensureNumber(mat.emissiveIntensity, 0);
     if (mat.emissive) mat.emissive = ensureColor(mat.emissive, "#000000");
@@ -387,13 +390,10 @@ export function registerDesktopTools(server: Server) {
         case "torus":
           geometry.radius = ensureNumber(args.radius, 0.5);
           geometry.tube = ensureNumber(args.tube, 0.2);
-          geometry.radialSegments = ensureNumber(args.radialSegments, 8);
-          geometry.tubularSegments = ensureNumber(args.radialSegments ? args.radialSegments * 8 : 64, 64);
           break;
         case "ring":
           geometry.innerRadius = ensureNumber(args.innerRadius, 0.5);
           geometry.outerRadius = ensureNumber(args.outerRadius, 1);
-          geometry.thetaSegments = ensureNumber(args.radialSegments, 32);
           break;
       }
       
