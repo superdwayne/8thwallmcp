@@ -51,6 +51,53 @@ async function listAllFiles(dir: string): Promise<string[]> {
   return out;
 }
 
+async function ensureExpanseJson(root: string): Promise<{ created: boolean; path: string }> {
+  // Check if .expanse.json exists in root or src/
+  const candidateRoot = path.join(root, ".expanse.json");
+  const candidateSrc = path.join(root, "src", ".expanse.json");
+  
+  try {
+    await fs.access(candidateRoot);
+    return { created: false, path: candidateRoot };
+  } catch {
+    try {
+      await fs.access(candidateSrc);
+      return { created: false, path: candidateSrc };
+    } catch {
+      // Neither exists - create template in src/.expanse.json
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      
+      const spaceId = `space-${Date.now()}`;
+      const template = {
+        entrySpaceId: spaceId,
+        objects: {},
+        spaces: {
+          [spaceId]: {
+            id: spaceId,
+            name: "Default",
+            activeCamera: null,
+            reflections: {
+              type: "url",
+              url: "https://cdn.8thwall.com/web/assets/envmap/basic_env_map-m9hqpneh.jpg"
+            }
+          }
+        },
+        runtimeVersion: {
+          type: "version",
+          level: "major",
+          major: 2,
+          minor: 0,
+          patch: 0
+        },
+        historyVersion: `gen-${Date.now().toString(36)}`
+      };
+      
+      await fs.writeFile(candidateSrc, JSON.stringify(template, null, 2), "utf-8");
+      return { created: true, path: candidateSrc };
+    }
+  }
+}
+
 export function registerProjectTools(server: Server) {
   // project_get_root
   server.tool(
@@ -73,8 +120,23 @@ export function registerProjectTools(server: Server) {
       if (!st || !st.isDirectory()) throw new Error("Path does not exist or is not a directory");
       process.env.PROJECT_ROOT = candidate;
       resetCachedProjectRoot(candidate);
-      const data = { projectRoot: candidate };
-      return { content: [ { type: "text", text: JSON.stringify(data, null, 2) } ] };
+      
+      // Ensure .expanse.json exists
+      const expanseResult = await ensureExpanseJson(candidate);
+      
+      const data = { 
+        projectRoot: candidate,
+        expanseJson: {
+          path: expanseResult.path,
+          created: expanseResult.created
+        }
+      };
+      
+      const message = expanseResult.created 
+        ? `✅ Project root set to ${candidate}\n✅ Created ${path.relative(candidate, expanseResult.path)} (file didn't exist)`
+        : `✅ Project root set to ${candidate}\n✅ Found existing ${path.relative(candidate, expanseResult.path)}`;
+      
+      return { content: [ { type: "text", text: message } ] };
     }
   );
 
@@ -118,8 +180,23 @@ export function registerProjectTools(server: Server) {
       if (!st || !st.isDirectory()) throw new Error(`Project folder not found: ${chosen}`);
       process.env.PROJECT_ROOT = chosen;
       resetCachedProjectRoot(chosen);
-      const data = { projectRoot: chosen };
-      return { content: [ { type: "text", text: JSON.stringify(data, null, 2) } ] };
+      
+      // Ensure .expanse.json exists
+      const expanseResult = await ensureExpanseJson(chosen);
+      
+      const data = { 
+        projectRoot: chosen,
+        expanseJson: {
+          path: expanseResult.path,
+          created: expanseResult.created
+        }
+      };
+      
+      const message = expanseResult.created 
+        ? `✅ Project root set to ${chosen}\n✅ Created ${path.relative(chosen, expanseResult.path)} (file didn't exist)`
+        : `✅ Project root set to ${chosen}\n✅ Found existing ${path.relative(chosen, expanseResult.path)}`;
+      
+      return { content: [ { type: "text", text: message } ] };
     }
   );
   // project.get_info (analogous to get_scene_info)

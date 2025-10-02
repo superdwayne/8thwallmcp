@@ -111,6 +111,7 @@ If the preview doesn’t open on `localhost`, use `http://127.0.0.1:5173/`.
 - You can point the MCP server to a Desktop project so all edits reflect in the app:
   - Option A (config): set `PROJECT_ROOT` to the project path in your MCP client env.
   - Option B (tools): use `desktop_list_projects` to discover paths, then `desktop_set_project` with a folder name, or `project_set_root` with the full path. Confirm with `project_get_root`.
+- **Automatic `.expanse.json` creation**: When you set a project root using `project_set_root` or `desktop_set_project`, the server automatically creates a template `src/.expanse.json` file if one doesn't already exist. This ensures every project is ready for 8th Wall Desktop scene editing immediately.
 - After setting the root, you can still use project- and asset-level helpers (`project_*`, `assets_*`). Scene helpers automatically switch to the Desktop JSON tooling when a Desktop project is detected.
 - When a Desktop project is active, traditional web scene tools (`scene_*`) are disabled and will point you toward the Desktop-specific JSON helpers instead. Use the `desktop_*` family for scene edits.
 
