@@ -19,23 +19,26 @@ MCP client configuration
 
 Example for Claude Desktop `mcpServers` in `config.json`:
 
-```
+```json
 {
   "mcpServers": {
     "8thwall": {
       "command": "node",
       "args": ["dist/index.js"],
       "env": {
-        "MODE": "local",          // default; use "docs" or "api" if needed
-        "EIGHTHWALL_BASE_URL": "https://www.8thwall.com",
-        "EIGHTHWALL_DOCS_ROOT": "https://www.8thwall.com/docs/",
-        "EIGHTHWALL_API_KEY": "<optional-if-API-mode>",
+        "MODE": "local",
         "PROJECT_ROOT": "./project"
       }
     }
   }
 }
 ```
+
+Optional environment variables you can add:
+- `MODE`: `"local"` (default), `"docs"`, or `"api"`
+- `EIGHTHWALL_BASE_URL`: `"https://www.8thwall.com"` (for API mode)
+- `EIGHTHWALL_DOCS_ROOT`: `"https://www.8thwall.com/docs/"` (for docs mode)
+- `EIGHTHWALL_API_KEY`: Your API key (for API mode only)
 
 Claude Desktop quick config (Local mode)
 
