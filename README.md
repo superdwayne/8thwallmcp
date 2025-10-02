@@ -115,27 +115,44 @@ If the preview doesn’t open on `localhost`, use `http://127.0.0.1:5173/`.
 - After setting the root, you can still use project- and asset-level helpers (`project_*`, `assets_*`). Scene helpers automatically switch to the Desktop JSON tooling when a Desktop project is detected.
 - When a Desktop project is active, traditional web scene tools (`scene_*`) are disabled and will point you toward the Desktop-specific JSON helpers instead. Use the `desktop_*` family for scene edits.
 
-Desktop JSON scene config helpers
+Desktop scene building tools
+
+High-level schema-aware tools for 8th Wall Desktop projects:
+
+- `desktop_add_shape`: Add 3D primitives (box, sphere, cylinder, plane, circle, cone, torus, ring) with materials (basic, standard, phong)
+  - Args: `name`, `geometryType`, `position`, `rotation`, `scale`, `color`, `materialType`, `roughness`, `metalness`, `opacity`, `emissive`, `emissiveIntensity`
+  - Geometry-specific: `width`, `height`, `depth`, `radius`, `radiusTop`, `radiusBottom`, `tube`, `radialSegments`, `innerRadius`, `outerRadius`
+- `desktop_add_model`: Add GLB/GLTF 3D models from assets to the scene
+  - Args: `name`, `assetPath`, `position`, `rotation`, `scale`, `animationClip`, `loop`, `addPhysics`, `physicsType`, `physicsMass`
+- `desktop_enable_face_tracking`: Enable AR face tracking with optional debug mesh
+  - Args: `addDebugMesh` (bool)
+- `desktop_add_rotation_animation`: Add rotation animation to an object
+  - Args: `objectName`, `axis` (x/y/z), `degreesPerSecond`, `loop`, `reverse`, `easeIn`, `easeOut`
+- `desktop_add_scale_animation`: Add scale/pulse animation to an object
+  - Args: `objectName`, `minScale`, `maxScale`, `duration`, `loop`, `reverse`, `easeIn`, `easeOut`
+- `desktop_set_model_animation`: Set animation clip playback for a GLB/GLTF model
+  - Args: `modelName`, `animationClip`, `loop`, `speed`
+
+Low-level JSON manipulation tools
 
 - `desktop_guess_scene`: Scan `PROJECT_ROOT` for likely scene/config JSON files (heuristics).
-- `desktop_read_json`: Read a JSON file; optionally return a value at a JSON Pointer (e.g., `/scenes/0/entities`).
-- `desktop_patch_json`: Apply best-effort JSON patches with operations: `set`, `remove`, `push`, `merge` using JSON Pointers.
-- `desktop_find_arrays`: Locate arrays commonly used for scene contents (e.g., `entities`, `nodes`, `objects`, `scenes`, `spaces`, `children`).
-- `desktop_add_entity_best_effort`: Insert an object into the first suitable array (or a preferred pointer) and save, with optional backup.
+- `desktop_read_json`: Read `.expanse.json` with optional JSON Pointer path.
+- `desktop_write_json`: Write entire `.expanse.json` (replaces file).
+- `desktop_patch_json`: Apply JSON patches with operations: `set`, `remove`, `push` using JSON Pointers.
 
-Basic workflow for Desktop configs
+Basic workflow for Desktop projects
 
 - Point tools at your Desktop project: `desktop_set_project` or `project_set_root`.
-- Discover config candidates: `desktop_guess_scene`.
-- Inspect a file: `desktop_read_json` with optional `pointer`.
-- Identify insertion targets: `desktop_find_arrays` on the chosen file.
-- Patch or add content:
-  - Use `desktop_patch_json` to set/merge/remove values via JSON Pointers.
-  - Or use `desktop_add_entity_best_effort` to push an object into a likely array.
-
-Notes
-
-- These JSON tools are schema-agnostic and operate on your actual Desktop app files. If you share a sample of your scene config, we can add schema-aware helpers (e.g., typed node/component constructors).
+- Add 3D content:
+  - Use `desktop_add_shape` for primitives (spheres, boxes, etc.)
+  - Use `desktop_add_model` for GLB/GLTF models from your `src/assets/` folder
+- Add animations:
+  - Use `desktop_add_rotation_animation` for spinning objects
+  - Use `desktop_add_scale_animation` for pulsing/breathing effects
+  - Use `desktop_set_model_animation` to play model animations
+- Enable AR features:
+  - Use `desktop_enable_face_tracking` for face AR experiences
+- Advanced: Use low-level JSON tools (`desktop_read_json`, `desktop_patch_json`) for custom edits.
 
 Environment variables
 
