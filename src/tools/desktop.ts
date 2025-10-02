@@ -312,6 +312,9 @@ export function registerDesktopTools(server: Server) {
       opacity: z.number().optional(),
       emissive: z.string().optional(),
       emissiveIntensity: z.number().optional(),
+      colorWrite: z.boolean().optional().describe("Set to false for hider/occluder materials (AR portals)"),
+      depthWrite: z.boolean().optional().describe("Set to true for hider/occluder materials"),
+      depthTest: z.boolean().optional().describe("Set to true for hider/occluder materials"),
       // Geometry-specific properties
       width: z.number().optional(),
       height: z.number().optional(),
@@ -418,6 +421,17 @@ export function registerDesktopTools(server: Server) {
       // and cause color rendering issues in 8th Wall Desktop, so we skip them
       
       material.opacity = ensureNumber(args.opacity, 1);
+      
+      // Support hider/occluder materials (colorWrite: false for AR portals)
+      if (args.colorWrite !== undefined) {
+        material.colorWrite = args.colorWrite;
+      }
+      if (args.depthWrite !== undefined) {
+        material.depthWrite = args.depthWrite;
+      }
+      if (args.depthTest !== undefined) {
+        material.depthTest = args.depthTest;
+      }
       
       if (args.emissive) {
         material.emissive = ensureColor(args.emissive, "#000000");
