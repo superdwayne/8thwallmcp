@@ -403,20 +403,19 @@ export function registerDesktopTools(server: Server) {
       }
       
       // Create material with proper validation
+      // IMPORTANT: Always use "basic" material type for colors to render correctly in 8th Wall Desktop
+      // Standard/phong materials with roughness/metalness often fail to display colors properly
       const materialTypeInput = args.materialType || "basic";
-      // Use lowercase material types (basic, standard, phong)
       const materialType = materialTypeInput.toLowerCase();
       
+      // Force "basic" type for reliable color rendering
       const material: any = {
-        type: materialType,
+        type: "basic",
         color: ensureColor(args.color, "#ffffff")
       };
       
-      // Add standard/phong material properties
-      if (materialType === "standard" || materialType === "phong") {
-        material.roughness = ensureNumber(args.roughness, 0.5);
-        material.metalness = ensureNumber(args.metalness, 0.5);
-      }
+      // NOTE: Roughness and metalness are NOT supported with basic materials
+      // and cause color rendering issues in 8th Wall Desktop, so we skip them
       
       material.opacity = ensureNumber(args.opacity, 1);
       
