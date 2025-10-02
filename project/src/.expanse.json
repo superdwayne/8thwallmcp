@@ -1,0 +1,129 @@
+{
+  "entrySpaceId": "space-1759398248797",
+  "objects": {
+    "flower-mg98ah5w": {
+      "name": "flower",
+      "position": [
+        0,
+        0,
+        -2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": {
+        "type": "torus",
+        "radius": 0.5,
+        "tube": 0.15,
+        "radialSegments": 8,
+        "tubularSegments": 64
+      },
+      "material": {
+        "type": "standard",
+        "color": "#FF69B4",
+        "roughness": 0.4,
+        "metalness": 0.5,
+        "opacity": 1,
+        "side": "Front",
+        "emissiveIntensity": 0
+      },
+      "components": {},
+      "id": "flower-mg98ah5w",
+      "parentId": "space-1759398248797",
+      "order": 1759398.248804
+    },
+    "golden-ring-mg9awpp3": {
+      "name": "golden-ring",
+      "position": [
+        0,
+        1.5,
+        -2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": {
+        "type": "ring",
+        "innerRadius": 0.5,
+        "outerRadius": 1,
+        "thetaSegments": 32
+      },
+      "material": {
+        "type": "standard",
+        "color": "#FFD700",
+        "roughness": 0.2,
+        "metalness": 0.8,
+        "opacity": 1,
+        "side": "Front",
+        "emissiveIntensity": 0
+      },
+      "components": {},
+      "id": "golden-ring-mg9awpp3",
+      "parentId": "space-1759398248797",
+      "order": 1759402.645527
+    },
+    "silver-ring-mg9b00n8": {
+      "name": "silver-ring",
+      "position": [
+        1.5,
+        1,
+        -2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": {
+        "type": "ring",
+        "innerRadius": 0.3,
+        "outerRadius": 0.8,
+        "thetaSegments": 32
+      },
+      "material": {
+        "type": "standard",
+        "color": "#C0C0C0",
+        "roughness": 0.4,
+        "metalness": 0.9,
+        "opacity": 1,
+        "side": "Front",
+        "emissiveIntensity": 0
+      },
+      "components": {},
+      "id": "silver-ring-mg9b00n8",
+      "parentId": "space-1759398248797",
+      "order": 1759402.799684
+    }
+  },
+  "spaces": {
+    "space-1759398248797": {
+      "id": "space-1759398248797",
+      "name": "Main Space",
+      "type": "space"
+    }
+  },
+  "runtimeVersion": "1.0.0",
+  "historyVersion": 1
+}
