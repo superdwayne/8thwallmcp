@@ -16,6 +16,26 @@ async function writeFileText(rel: string, content: string): Promise<void> {
   await fs.writeFile(full, content, "utf-8");
 }
 
+async function isDesktopProject(): Promise<boolean> {
+  try {
+    const root = getProjectRoot();
+    // Check for .expanse.json in root or src/
+    const candidates = [
+      path.join(root, ".expanse.json"),
+      path.join(root, "src", ".expanse.json")
+    ];
+    for (const candidate of candidates) {
+      try {
+        await fs.access(candidate);
+        return true;
+      } catch {}
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 function detectEngineFromIndexHtml(html: string): "aframe" | "three" | "unknown" {
   const l = html.toLowerCase();
   if (l.includes("aframe.min.js") || l.includes("<a-scene")) return "aframe";
@@ -62,7 +82,7 @@ export function registerSceneTools(server: Server) {
     "scene_detect_engine",
     "Detect whether the project uses A-Frame or Three.js",
     async () => {
-      if (isDesktopProject()) {
+      if (await isDesktopProject()) {
         return { content: [{ type: "json", json: { engine: "desktop" } }] };
       }
       try {

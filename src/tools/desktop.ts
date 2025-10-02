@@ -465,6 +465,104 @@ export function registerDesktopTools(server: Server) {
     }
   );
 
+  // desktop_add_model
+  server.tool(
+    "desktop_add_model",
+    "Add a 3D model (GLB/GLTF) from assets to the scene",
+    {
+      name: z.string(),
+      assetPath: z.string(),
+      position: z.array(z.number()).length(3).optional(),
+      rotation: z.array(z.number()).length(4).optional(),
+      scale: z.array(z.number()).length(3).optional(),
+      animationClip: z.string().optional(),
+      loop: z.boolean().optional(),
+      addPhysics: z.boolean().optional(),
+      physicsMass: z.number().optional(),
+      physicsType: z.enum(["static", "dynamic", "kinematic"]).optional()
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      
+      // Detect structure
+      const isNewFormat = data.objects && typeof data.objects === 'object' && !Array.isArray(data.objects);
+      
+      if (!isNewFormat) {
+        throw new Error("Model loading only supported in new format projects");
+      }
+      
+      // Ensure objects and spaces exist
+      if (!data.objects) data.objects = {};
+      if (!data.spaces) data.spaces = {};
+      if (!data.entrySpaceId) {
+        const spaceId = Object.keys(data.spaces)[0] || "88453035-dc0f-486d-868a-8ff7c2fda864";
+        data.entrySpaceId = spaceId;
+        if (!data.spaces[spaceId]) {
+          data.spaces[spaceId] = {
+            id: spaceId,
+            name: "Default",
+            activeCamera: null,
+            reflections: {
+              type: "url",
+              url: "https://cdn.8thwall.com/web/assets/envmap/basic_env_map-m9hqpneh.jpg"
+            }
+          };
+        }
+      }
+      
+      // Create the model object
+      const modelId = `${args.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString(36)}`;
+      const newModel: any = {
+        name: args.name,
+        id: modelId,
+        position: ensureVec(args.position, [0, 0, 0]),
+        rotation: ensureVec(args.rotation, [0, 0, 0, 1]),
+        scale: ensureVec(args.scale, [1, 1, 1]),
+        geometry: null,
+        material: null,
+        components: {},
+        gltfModel: {
+          src: {
+            type: "asset",
+            asset: args.assetPath
+          },
+          animationClip: args.animationClip || "",
+          loop: args.loop !== false
+        },
+        parentId: data.entrySpaceId,
+        order: Date.now() / 1000000,
+        prefab: true
+      };
+      
+      // Add physics if requested
+      if (args.addPhysics) {
+        const physicsType = args.physicsType || "dynamic";
+        const mass = args.physicsMass !== undefined ? args.physicsMass : (physicsType === "static" ? 0 : 1);
+        
+        newModel.collider = {
+          geometry: {
+            type: "box",
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          mass: mass,
+          type: physicsType,
+          offsetX: 0,
+          offsetY: 0,
+          offsetZ: 0,
+          restitution: 0.5
+        };
+      }
+      
+      data.objects[modelId] = newModel;
+      
+      await writeExpanseJson(data);
+      
+      return { content: [{ type: "text", text: `Added 3D model "${args.name}" (${args.assetPath}) to .expanse.json` }] };
+    }
+  );
+
   // desktop_enable_face_tracking
   server.tool(
     "desktop_enable_face_tracking",

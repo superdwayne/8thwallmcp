@@ -97,6 +97,7 @@ Use desktop_add_shape tool with parameters like:
 - `desktop_write_json` - Write entire .expanse.json
 - `desktop_patch_json` - Patch specific parts
 - `desktop_add_shape` - Add 3D shapes (box, sphere, cylinder, plane, circle, cone, torus, ring)
+- `desktop_add_model` - Add 3D models (GLB/GLTF) from assets folder
 - `desktop_enable_face_tracking` - Enable face tracking
 - `desktop_guess_scene` - Find scene/config files
 
