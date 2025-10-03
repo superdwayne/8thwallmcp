@@ -834,6 +834,147 @@ export function registerDesktopTools(server: Server) {
     }
   );
 
+  // desktop_add_video
+  server.tool(
+    "desktop_add_video",
+    "Add a video plane with custom JavaScript for video texture",
+    {
+      videoFile: z.string().describe("Path to video file in assets (e.g., 'assets/video.mp4')"),
+      planeName: z.string().optional().describe("Name for the video plane (default: 'Video Plane')"),
+      position: z.array(z.number()).length(3).optional(),
+      rotation: z.array(z.number()).length(4).optional(),
+      scale: z.array(z.number()).length(3).optional(),
+      parentId: z.string().optional().describe("Parent object ID (e.g., image target container)"),
+      autoplay: z.boolean().optional().default(true),
+      loop: z.boolean().optional().default(true),
+      muted: z.boolean().optional().default(false)
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      const root = projectRoot();
+      
+      const planeName = args.planeName || "Video Plane";
+      const videoFileName = path.basename(args.videoFile);
+      
+      // Create video plane
+      const planeId = `video-plane-${Date.now().toString(36)}`;
+      const newPlane: any = {
+        id: planeId,
+        name: planeName,
+        position: ensureVec(args.position, [0, 0.6, 0]),
+        rotation: ensureVec(args.rotation, [-0.7071068, 0, 0, 0.7071068]), // Face up by default
+        scale: ensureVec(args.scale, [1.6, 0.9, 1]), // 16:9 aspect ratio
+        geometry: {
+          type: "plane",
+          width: 1,
+          height: 1
+        },
+        material: {
+          type: "basic",
+          color: "#ffffff",
+          opacity: 1
+        },
+        components: {},
+        parentId: args.parentId || data.entrySpaceId,
+        order: Date.now() / 1000000
+      };
+      
+      data.objects[planeId] = newPlane;
+      
+      // Create video texture JavaScript file
+      const videoScript = `// Video texture script for ${planeName}
+// Applies video from ${args.videoFile} to plane
+
+window.addEventListener('load', () => {
+  console.log('Video texture script loaded for ${planeName}');
+  
+  const checkScene = setInterval(() => {
+    const scene = window.XR8?.Threejs?.xrScene?.();
+    if (!scene) return;
+    
+    clearInterval(checkScene);
+    console.log('Scene found, setting up video...');
+    
+    // Create video element
+    const video = document.createElement('video');
+    video.src = '${args.videoFile}';
+    video.crossOrigin = 'anonymous';
+    video.loop = ${args.loop};
+    video.muted = ${args.muted};
+    video.playsInline = true;
+    
+    // Create video texture
+    const videoTexture = new THREE.VideoTexture(video);
+    videoTexture.minFilter = THREE.LinearFilter;
+    videoTexture.magFilter = THREE.LinearFilter;
+    
+    // Find the video plane
+    const findPlane = (obj) => {
+      if (obj.name === '${planeName}') {
+        console.log('Found ${planeName}!');
+        
+        // Replace material with video texture
+        obj.material = new THREE.MeshBasicMaterial({
+          map: videoTexture,
+          side: THREE.DoubleSide
+        });
+        
+        // Play video
+        ${args.autoplay ? `
+        const playVideo = () => {
+          video.play().catch(err => {
+            console.log('Video autoplay blocked, adding tap-to-play:', err);
+            document.addEventListener('touchstart', () => {
+              video.play();
+            }, { once: true });
+          });
+        };
+        
+        playVideo();
+        
+        // Also play when parent becomes visible
+        if (obj.parent) {
+          const checkVisible = () => {
+            if (obj.parent.visible) {
+              playVideo();
+            }
+          };
+          setInterval(checkVisible, 500);
+        }
+        ` : ''}
+      }
+      
+      obj.children.forEach(findPlane);
+    };
+    
+    scene.children.forEach(findPlane);
+  }, 100);
+});
+`;
+      
+      // Write video script file
+      const scriptPath = path.join(root, 'src', 'video-texture.js');
+      await fs.writeFile(scriptPath, videoScript, 'utf-8');
+      
+      // Add script to .expanse.json if not already there
+      if (!data.scripts) {
+        data.scripts = [];
+      }
+      if (!data.scripts.includes('src/video-texture.js')) {
+        data.scripts.push('src/video-texture.js');
+      }
+      
+      await writeExpanseJson(data);
+      
+      return { 
+        content: [{ 
+          type: "text", 
+          text: `✅ Added video plane "${planeName}" with texture from ${args.videoFile}\n✅ Created src/video-texture.js\n✅ Added script to .expanse.json\n\nMake sure ${args.videoFile} exists in your project!` 
+        }] 
+      };
+    }
+  );
+
   // desktop_set_model_animation
   server.tool(
     "desktop_set_model_animation",
