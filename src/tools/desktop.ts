@@ -762,6 +762,78 @@ export function registerDesktopTools(server: Server) {
     }
   );
 
+  // desktop_add_image_target
+  server.tool(
+    "desktop_add_image_target",
+    "Add an image target container for AR image tracking",
+    {
+      targetName: z.string().describe("Name of the image target (e.g., 'my-poster')"),
+      imageUrl: z.string().describe("Path to target image in assets (e.g., 'assets/poster.jpg')"),
+      position: z.array(z.number()).length(3).optional(),
+      rotation: z.array(z.number()).length(4).optional(),
+      scale: z.array(z.number()).length(3).optional()
+    },
+    async (args: any) => {
+      const data = await readExpanseJson();
+      
+      // Ensure camera is configured for image targets
+      const cameraId = Object.keys(data.objects).find(id => 
+        data.objects[id].camera
+      );
+      
+      if (cameraId) {
+        const camera = data.objects[cameraId];
+        if (!camera.camera.xr) camera.camera.xr = {};
+        camera.camera.xr.xrCameraType = "imageTargets";
+        camera.camera.xr.phone = "AR";
+        
+        if (!camera.camera.xr.imageTargets) {
+          camera.camera.xr.imageTargets = { targets: [] };
+        }
+        
+        // Add target to camera's target list if not already there
+        const targetExists = camera.camera.xr.imageTargets.targets.some(
+          (t: any) => t.name === args.targetName
+        );
+        
+        if (!targetExists) {
+          camera.camera.xr.imageTargets.targets.push({
+            name: args.targetName,
+            url: args.imageUrl
+          });
+        }
+      }
+      
+      // Create image target container
+      const id = `image-target-${args.targetName.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString(36)}`;
+      const newObject: any = {
+        id,
+        name: `Image Target - ${args.targetName}`,
+        position: ensureVec(args.position, [0, 0, 0]),
+        rotation: ensureVec(args.rotation, [0, 0, 0, 1]),
+        scale: ensureVec(args.scale, [1, 1, 1]),
+        geometry: null,
+        material: null,
+        components: {},
+        imageTarget: {
+          name: args.targetName
+        },
+        parentId: data.entrySpaceId,
+        order: Date.now() / 1000000
+      };
+      
+      data.objects[id] = newObject;
+      await writeExpanseJson(data);
+      
+      return { 
+        content: [{ 
+          type: "text", 
+          text: `✅ Created image target container "${args.targetName}". Add content as children of this object to appear when the image is detected.` 
+        }] 
+      };
+    }
+  );
+
   // desktop_set_model_animation
   server.tool(
     "desktop_set_model_animation",
