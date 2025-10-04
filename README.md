@@ -1,28 +1,95 @@
-8th Wall MCP Server
+# 8th Wall MCP Server
 
-This repository scaffolds a Model Context Protocol (MCP) server to work with 8th Wall. It supports three modes:
+> Build WebAR experiences with natural language using Claude Desktop and 8th Wall Desktop
 
-- Docs mode: fetch and expose 8th Wall Studio docs as resources and tools (search/read).
-- API mode: wrap 8th Wall endpoints to manage apps and scenes (requires credentials).
-- Local mode: mirror BlenderMCP-style capabilities for a local web XR project (project/file ops, asset search/download stubs, strategy guidance).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io/)
 
-By default, the server starts with a minimal tool and placeholders you can extend after confirming your preferred mode.
+## 🚀 One-Click Install
 
-Quick start
+Click below to install with one click into Claude Desktop:
 
-- Requirements: Node.js 18+ (for native `fetch`), npm
-- Install deps: `npm install`
-- Build: `npm run build`
-- Run (stdio): `node dist/index.js`
+[![Install with MCPB](https://img.shields.io/badge/Install%20with-MCPB-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/latest/download/mcp-8thwall-0.1.0.mcpb)
 
-MCP client configuration
+**Download and double-click to install!** No terminal commands, no configuration files.
 
-Example for Claude Desktop `mcpServers` in `config.json`:
+---
 
+## ✨ What's New
+
+### Latest Updates (v0.1.0)
+
+- ✅ **Fixed geometry properties** - Cylinders and cones now render correctly in 8th Wall Desktop
+- ✅ **MCPB 0.2 support** - Updated to latest Desktop Extension format
+- ✅ **Material rendering fix** - Colors now display properly using `basic` materials
+- ✅ **AR Portal support** - Create AR portals with hider/occluder materials
+- ✅ **Image Target support** - Build image tracking experiences
+- ✅ **Video texture support** - Add videos to your AR scenes
+- ✅ **Animation tools** - Rotation and scale animations for objects
+- ✅ **Model animations** - Control GLB/GLTF animation playback
+
+## 🎯 Features
+
+### 🛠️ **47 Tools for 8th Wall Development**
+
+- **Desktop Scene Building** - Add shapes, models, lights, and animations
+- **AR Features** - Image targets, face tracking, world tracking
+- **Asset Management** - Search PolyHaven, download models, manage files
+- **Project Tools** - Create, edit, and manage 8th Wall Desktop projects
+- **Animation System** - Rotation, scale, and model animations
+- **Physics** - Add physics to objects (dynamics, mass, gravity)
+- **Dev Server** - Built-in preview server for testing
+
+### 🎨 **Natural Language Scene Building**
+
+```
+"Create a spinning red cube with a metallic sphere orbiting around it"
+"Add a beach ball with physics that falls when the scene starts"
+"Create an AR portal using hider materials"
+"Add an image target experience with a video"
+```
+
+### 🔧 **Three Operation Modes**
+
+1. **Local Mode** (Default) - Work with 8th Wall Desktop projects locally
+2. **Docs Mode** - Access 8th Wall documentation
+3. **API Mode** - Integrate with 8th Wall Cloud (requires API key)
+
+---
+
+## 📦 Installation
+
+### Option 1: One-Click Install (Recommended)
+
+1. **Download** the [mcp-8thwall-0.1.0.mcpb](https://github.com/superdwayne/8thwallmcp/releases/latest/download/mcp-8thwall-0.1.0.mcpb) file
+2. **Double-click** to open with Claude Desktop
+3. **Click Install** when prompted
+4. **Done!** All 47 tools are now available
+
+### Option 2: Manual Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/superdwayne/8thwallmcp.git
+   cd mcp-8thwall
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Build:**
+   ```bash
+   npm run build
+   ```
+
+4. **Add to Claude Desktop config** (`~/.claude/claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
-    "8thwall": {
+       "mcp-8thwall": {
       "command": "node",
       "args": [
         "/absolute/path/to/mcp-8thwall/dist/index.js"
@@ -32,237 +99,358 @@ Example for Claude Desktop `mcpServers` in `config.json`:
 }
 ```
 
-**Note:** Replace `/absolute/path/to/mcp-8thwall/` with the actual path where you cloned this repo.
+5. **Restart Claude Desktop**
 
-Optional environment variables you can add in an `env` object:
-- `MODE`: `"local"` (default), `"docs"`, or `"api"`
-- `PROJECT_ROOT`: Path to your project (defaults to `./project`)
-- `EIGHTHWALL_BASE_URL`: `"https://www.8thwall.com"` (for API mode)
-- `EIGHTHWALL_DOCS_ROOT`: `"https://www.8thwall.com/docs/"` (for docs mode)
-- `EIGHTHWALL_API_KEY`: Your API key (for API mode only)
+---
 
-Cursor quick config
+## 🎮 Quick Start
 
-- Global server: Settings → MCP → Add New Global MCP Server, then paste:
+### Create Your First AR Scene
+
+1. **Set your project:**
+   ```
+   "Set my project to my-ar-project"
+   ```
+
+2. **Add 3D content:**
+   ```
+   "Create a red spinning cube at position (0, 1, -2)"
+   ```
+
+3. **Add animations:**
+   ```
+   "Make the cube pulse between 80% and 120% size"
+   ```
+
+4. **Add AR features:**
+   ```
+   "Enable face tracking with a debug mesh"
+   ```
+
+### Work with 8th Wall Desktop
+
+```
+"List all my 8th Wall Desktop projects"
+"Set project to beach-scene"
+"Add a seagull GLB model from assets at position (0, 2, 0)"
+"Add physics to the beach ball"
+"Make the rocket orbit the planet"
+```
+
+### Search for Assets
+
+```
+"Search PolyHaven for space textures"
+"Download the damaged helmet GLB"
+"Add the downloaded model at position (0, 1.5, -3)"
+```
+
+---
+
+## 🔧 Desktop Scene Building Tools
+
+### Primitives & Shapes
+
+- `desktop_add_shape` - Add 3D primitives:
+  - **Geometries**: box, sphere, cylinder, cone, plane, circle, torus, ring
+  - **Materials**: basic, standard, phong
+  - **Properties**: color, roughness, metalness, opacity, emissive
+  - **Hider materials**: colorWrite, depthWrite, depthTest (for AR portals)
+
+### 3D Models
+
+- `desktop_add_model` - Add GLB/GLTF models:
+  - Load from `assets/` folder
+  - Position, rotation, scale
+  - Animation playback
+  - Physics support (static, dynamic, kinematic)
+
+### Animations
+
+- `desktop_add_rotation_animation` - Spin objects:
+  - Axis selection (X, Y, Z)
+  - Speed control
+  - Loop and reverse options
+  - Easing functions
+
+- `desktop_add_scale_animation` - Pulse/breathe effects:
+  - Min/max scale
+  - Duration control
+  - Loop and reverse
+  - Easing functions
+
+- `desktop_set_model_animation` - Control model animations:
+  - Play specific animation clips
+  - Loop control
+  - Playback speed
+
+### AR Features
+
+- `desktop_enable_face_tracking` - Face AR experiences
+- `desktop_add_image_target` - Image tracking
+- `desktop_add_video` - Video textures
+- Hider materials for AR portals
+
+---
+
+## 📚 Documentation
+
+### Tool Categories
+
+<details>
+<summary><b>Project Management (12 tools)</b></summary>
+
+- `project_get_root` / `project_set_root` - Manage project directory
+- `desktop_list_projects` / `desktop_set_project` - 8th Wall Desktop projects
+- `project_get_info` - Get project structure
+- `project_list_files` - List files
+- `project_read_file` / `project_write_file` - File operations
+- `project_delete_file` / `project_move_file` - File management
+- `project_scaffold` - Create new project
+- `project_export_zip` - Export for upload
+
+</details>
+
+<details>
+<summary><b>Scene Building (13 tools)</b></summary>
+
+- `desktop_add_shape` - Primitives (box, sphere, etc.)
+- `desktop_add_model` - GLB/GLTF models
+- `desktop_add_rotation_animation` - Spin objects
+- `desktop_add_scale_animation` - Pulse effects
+- `desktop_add_image_target` - Image tracking
+- `desktop_add_video` - Video textures
+- `desktop_enable_face_tracking` - Face AR
+- `desktop_set_model_animation` - Model animations
+- `desktop_read_json` / `desktop_write_json` / `desktop_patch_json` - JSON manipulation
+- `desktop_guess_scene` - Find scene files
+
+</details>
+
+<details>
+<summary><b>Asset Management (8 tools)</b></summary>
+
+- `assets_status` - Check PolyHaven availability
+- `assets_search_polyhaven` - Search assets
+- `assets_polyhaven_categories` - Browse categories
+- `assets_polyhaven_files` - Get asset metadata
+- `assets_download_url` - Download files
+- `assets_unzip` - Extract archives
+- `prompts_asset_strategy` - Asset guidance
+
+</details>
+
+<details>
+<summary><b>Development Tools (3 tools)</b></summary>
+
+- `devserver_start` / `devserver_stop` - Local preview
+- `health_ping` - Health check
+
+</details>
+
+<details>
+<summary><b>Web Scene Tools (11 tools)</b></summary>
+
+For A-Frame and Three.js projects:
+- `scene_detect_engine` - Detect A-Frame or Three.js
+- `scene_add_gltf_model` - Add models
+- `scene_set_background_color` - Background
+- `scene_add_primitive` - Primitives
+- `scene_add_light` - Lighting
+- `scene_set_environment_hdr` - HDR environment
+- `scene_add_animation` - Animations
+- `scene_add_textured_plane` - Image planes
+- `scene_add_orbit_controls` - Three.js controls
+- `scene_add_grid_helper` / `scene_add_floor` - Helpers
+
+</details>
+
+<details>
+<summary><b>Documentation (2 tools)</b></summary>
+
+- `docs_get_page` - Fetch documentation
+- `docs_search` - Search docs
+
+</details>
+
+---
+
+## 🐛 Known Issues & Fixes
+
+### ✅ Fixed in v0.1.0
+
+- **Geometry Properties Error** - Fixed missing `heightSegments` and `openEnded` properties for cylinders and cones
+- **Color Rendering Issue** - Materials now use `basic` type instead of `standard` for reliable color rendering
+- **Server Crashes** - Fixed process lifecycle management with proper keep-alive intervals
+
+### Current Limitations
+
+- MCPB auto-installation may require Claude Desktop restart
+- Image target camera preview shows black in Desktop mode (test on phone)
+- Video autoplay may require user interaction on some platforms
+
+---
+
+## 🏗️ Project Structure
+
+```
+mcp-8thwall/
+├── src/
+│   ├── index.ts              # Server entry point
+│   ├── tools/
+│   │   ├── desktop.ts        # 8th Wall Desktop tools
+│   │   ├── scene.ts          # Web scene tools
+│   │   ├── project.ts        # Project management
+│   │   ├── assets.ts         # Asset tools
+│   │   ├── devserver.ts      # Dev server
+│   │   └── docs.ts           # Documentation tools
+│   ├── clients/
+│   │   └── 8thwallClient.ts  # API client
+│   └── utils/
+│       └── projectRoot.ts    # Project root management
+├── dist/                     # Compiled JavaScript
+├── manifest.json             # MCPB manifest
+├── mcp-8thwall-0.1.0.mcpb   # Desktop Extension package
+└── README.md                 # This file
+```
+
+---
+
+## 🚀 Advanced Usage
+
+### Environment Variables
 
 ```json
 {
   "mcpServers": {
-    "8thwall": {
+    "mcp-8thwall": {
       "command": "node",
-      "args": [
-        "/absolute/path/to/mcp-8thwall/dist/index.js"
-      ]
+      "args": ["/path/to/dist/index.js"],
+      "env": {
+        "MODE": "local",
+        "PROJECT_ROOT": "/path/to/your/project",
+        "EIGHTHWALL_DESKTOP_ROOT": "~/Documents/8th Wall"
+      }
     }
   }
 }
 ```
 
-- Project server: create `.cursor/mcp.json` in your project root with the same JSON.
+**Available Modes:**
+- `local` (default) - Work with local 8th Wall Desktop projects
+- `docs` - Access 8th Wall documentation
+- `api` - Integrate with 8th Wall Cloud API
 
-**Note:** Replace `/absolute/path/to/mcp-8thwall/` with the actual path where you cloned this repo.
+### HTTP Bridge for n8n
 
-VS Code (MCP extension) quick steps
+Run an HTTP bridge to call tools from n8n or other automation platforms:
 
-- Install an MCP-compatible extension (e.g., “Model Context Protocol” or equivalent).
-- Add a new stdio server with:
-  - Name: `8thwall`
-  - Command: `node`
-  - Args: `dist/index.js`
-  - Env: `MODE=local`, `PROJECT_ROOT=./project`
+```bash
+HTTP_PORT=8787 MODE=local PROJECT_ROOT=./project npm run http
+```
 
-End-to-end quick test
+**API Endpoints:**
+- `GET http://localhost:8787/tools` - List all tools
+- `POST http://localhost:8787/tool/<toolName>` - Invoke a tool
 
-- Ask Claude: "Scaffold an A‑Frame scene and start the dev server."
-  - Expected tools: `project.scaffold`, then `devserver.start` → opens `http://127.0.0.1:5173/`.
-- Ask: "Add a red box at (0, 1, -2) sized 1x1x1 and a directional light at (2, 3, 2)."
-  - Tools: `scene.add_primitive`, `scene.add_light`.
-- Ask: "Set an HDRI environment from this URL and also use it as background: https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_08_1k.hdr"
-  - Tool: `scene.set_environment_hdr`.
-- Ask: "Download the DamagedHelmet GLB from Khronos samples and add it at y=1.2 with scale 0.5."
-  - Tools: `assets.download_url` with
-    - URL: `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb`
-    - filename: `models/DamagedHelmet.glb` (relative to `project/assets/`)
-  - Then: `scene.add_gltf_model` with `src: assets/models/DamagedHelmet.glb`, `position: [0,1.2,-2]`, `scale: [0.5,0.5,0.5]`.
-- Optional: "Export the project as a zip for Studio upload."
-  - Tool: `project.export_zip` → returns archive path.
+### Development
 
-If the preview doesn’t open on `localhost`, use `http://127.0.0.1:5173/`.
+```bash
+npm run dev          # Run with ts-node
+npm run build        # Compile TypeScript
+npm run typecheck    # Type checking only
+npm run pack:dxt     # Create MCPB package
+```
 
-- 8th Wall Desktop App integration
+---
 
-- The Desktop App typically stores projects under `~/Documents/8th-Wall/<YourProject>` (some installations use `~/Documents/8th Wall`).
-- If `PROJECT_ROOT` is not set, the server now auto-detects the first Desktop project under `EIGHTHWALL_DESKTOP_ROOT` (or the default Documents folder) by looking for `.expanse.json`/`spaces/` markers. Set `PROJECT_ROOT` explicitly if you need a different project.
-- You can point the MCP server to a Desktop project so all edits reflect in the app:
-  - Option A (config): set `PROJECT_ROOT` to the project path in your MCP client env.
-  - Option B (tools): use `desktop_list_projects` to discover paths, then `desktop_set_project` with a folder name, or `project_set_root` with the full path. Confirm with `project_get_root`.
-- **Automatic `.expanse.json` creation**: When you set a project root using `project_set_root` or `desktop_set_project`, the server automatically creates a template `src/.expanse.json` file if one doesn't already exist. This ensures every project is ready for 8th Wall Desktop scene editing immediately.
-- After setting the root, you can still use project- and asset-level helpers (`project_*`, `assets_*`). Scene helpers automatically switch to the Desktop JSON tooling when a Desktop project is detected.
-- When a Desktop project is active, traditional web scene tools (`scene_*`) are disabled and will point you toward the Desktop-specific JSON helpers instead. Use the `desktop_*` family for scene edits.
+## 📖 Examples
 
-Desktop scene building tools
+### Create an AR Beach Scene
 
-High-level schema-aware tools for 8th Wall Desktop projects:
+```
+1. "Set project to beach-scene"
+2. "Add a blue sphere for the sky at (0, 50, 0) with radius 100"
+3. "Add a sandy plane as the ground at (0, 0, 0)"
+4. "Download a seagull GLB and add it flying at (2, 5, -10)"
+5. "Make the seagull rotate slowly on the Y axis"
+6. "Add a beach ball with physics at (0, 2, -3)"
+```
 
-- `desktop_add_shape`: Add 3D primitives (box, sphere, cylinder, plane, circle, cone, torus, ring) with materials (basic, standard, phong)
-  - Args: `name`, `geometryType`, `position`, `rotation`, `scale`, `color`, `materialType`, `roughness`, `metalness`, `opacity`, `emissive`, `emissiveIntensity`
-  - Geometry-specific: `width`, `height`, `depth`, `radius`, `radiusTop`, `radiusBottom`, `tube`, `radialSegments`, `innerRadius`, `outerRadius`
-- `desktop_add_model`: Add GLB/GLTF 3D models from assets to the scene
-  - Args: `name`, `assetPath`, `position`, `rotation`, `scale`, `animationClip`, `loop`, `addPhysics`, `physicsType`, `physicsMass`
-- `desktop_enable_face_tracking`: Enable AR face tracking with optional debug mesh
-  - Args: `addDebugMesh` (bool)
-- `desktop_add_rotation_animation`: Add rotation animation to an object
-  - Args: `objectName`, `axis` (x/y/z), `degreesPerSecond`, `loop`, `reverse`, `easeIn`, `easeOut`
-- `desktop_add_scale_animation`: Add scale/pulse animation to an object
-  - Args: `objectName`, `minScale`, `maxScale`, `duration`, `loop`, `reverse`, `easeIn`, `easeOut`
-- `desktop_set_model_animation`: Set animation clip playback for a GLB/GLTF model
-  - Args: `modelName`, `animationClip`, `loop`, `speed`
+### Create an AR Portal
 
-Low-level JSON manipulation tools
+```
+1. "Set project to portal-demo"
+2. "Create a portal using hider materials"
+3. "Add a rotating torus as the portal ring"
+4. "Add a blue emissive sphere as the portal glow"
+5. "Make the glow pulse between 80% and 120%"
+```
 
-- `desktop_guess_scene`: Scan `PROJECT_ROOT` for likely scene/config JSON files (heuristics).
-- `desktop_read_json`: Read `.expanse.json` with optional JSON Pointer path.
-- `desktop_write_json`: Write entire `.expanse.json` (replaces file).
-- `desktop_patch_json`: Apply JSON patches with operations: `set`, `remove`, `push` using JSON Pointers.
+### Image Target Experience
 
-Basic workflow for Desktop projects
+```
+1. "Set project to image-target-demo"
+2. "Add an image target for 'poster.jpg'"
+3. "Add a video plane with 'promo-video.mp4'"
+4. "Add a GLB model that appears on the image"
+5. "Make the model spin on the Y axis"
+```
 
-- Point tools at your Desktop project: `desktop_set_project` or `project_set_root`.
-- Add 3D content:
-  - Use `desktop_add_shape` for primitives (spheres, boxes, etc.)
-  - Use `desktop_add_model` for GLB/GLTF models from your `src/assets/` folder
-- Add animations:
-  - Use `desktop_add_rotation_animation` for spinning objects
-  - Use `desktop_add_scale_animation` for pulsing/breathing effects
-  - Use `desktop_set_model_animation` to play model animations
-- Enable AR features:
-  - Use `desktop_enable_face_tracking` for face AR experiences
-- Advanced: Use low-level JSON tools (`desktop_read_json`, `desktop_patch_json`) for custom edits.
+---
 
-Environment variables
+## 🤝 Contributing
 
-- `MODE`: `local`, `docs`, or `api`. Defaults to `local`.
-- `EIGHTHWALL_DOCS_ROOT`: Base URL for docs. Defaults to `https://www.8thwall.com/docs/`.
-- `EIGHTHWALL_BASE_URL`: Origin for runtime links. Defaults to `https://www.8thwall.com`.
-- `EIGHTHWALL_API_BASE`: Base API URL for 8th Wall (only in API mode). Placeholder, set to the correct API host.
-- `EIGHTHWALL_API_KEY`: API token/key (only in API mode).
-- `MOCK_8THWALL`: If set to `1`, the server returns mocked data for API tools.
-// Local mode
-- `PROJECT_ROOT`: Filesystem path for the local project (default `./project`).
+Contributions are welcome! Please see:
+- [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for our code of conduct
+- [SECURITY.md](SECURITY.md) for security reporting
 
-Tools and resources
+### Development Workflow
 
-- `health_ping`: Simple health check tool.
- - `docs_get_page`: Fetch a docs page and return sanitized text.
- - `docs_search`: Basic keyword search across a set of doc URLs (naive fetch-and-scan).
-- `app.list`: List apps (API mode; mocked unless API wired up).
-- `app.get`: Get a single app by ID (API mode; mocked unless API wired up).
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Run `npm run typecheck`
+6. Submit a pull request
 
-Local mode (includes docs tools)
+---
 
-- `project_get_info`, `project_list_files`, `project_read_file`, `project_write_file`, `project_delete_file`, `project_move_file`
-- `project_scaffold`: create a minimal web XR shell (index.html, main.js, styles.css)
-  - Args: `template` = `aframe` (default) or `three`, `overwrite` (bool)
-- `assets_status`: report availability of PolyHaven integration
-- `assets_search_polyhaven`: search PolyHaven (public API; requires network)
-- `assets_download_url`: download any file into `project/assets/`
-- `prompts_asset_strategy`: guidance on sourcing/organizing assets
-- `devserver_start` / `devserver_stop`: serve `PROJECT_ROOT` locally for quick preview
- - `scene_detect_engine`: detect if the project uses A‑Frame or Three.js
- - `scene_add_gltf_model`: inject a GLTF/GLB model into the scene (A‑Frame entity or Three.js GLTFLoader)
- - `scene_set_background_color`: set scene background color (A‑Frame background or Three.js scene.background)
- - `scene_add_primitive`: add primitives (box/sphere/cylinder/plane), with color/size/pos/rot/scale
- - `scene_add_light`: add ambient/hemisphere/directional/point light
- - `scene_set_environment_hdr`: set environment from HDR/EXR (sky in A‑Frame; environment/background in Three.js)
- - `scene_add_animation`: add a simple spin animation (A‑Frame entity or Three.js loop)
- - `scene_add_textured_plane`: add a plane with an image texture
- - `scene_add_orbit_controls` (Three.js): add OrbitControls
- - `scene_add_grid_helper` (Three.js): add a grid helper
- - `scene_add_floor` (Three.js): add a simple floor plane
+## 📄 License
 
-PolyHaven helpers
+MIT License - see [LICENSE](LICENSE) for details
 
-- `assets_polyhaven_categories`: list categories for a given type
-- `assets_polyhaven_files`: get file metadata for an asset id
+---
 
-Other helpers
+## 🔗 Links
 
-- `assets_unzip`: unzip an archive into `project/assets/...`
+- **8th Wall Desktop**: [8thwall.com/desktop](https://www.8thwall.com/desktop/)
+- **Model Context Protocol**: [modelcontextprotocol.io](https://modelcontextprotocol.io/)
+- **Claude Desktop**: [claude.ai](https://claude.ai/)
+- **PolyHaven Assets**: [polyhaven.com](https://polyhaven.com/)
+- **GitHub Issues**: [Report a bug](https://github.com/superdwayne/8thwallmcp/issues)
 
-Note on 8th Wall API endpoints
+---
 
-This scaffold does not embed non-public information. If you intend to use API mode, set `EIGHTHWALL_API_BASE` and provide a valid `EIGHTHWALL_API_KEY`. Then implement the specific endpoints in `src/clients/8thwallClient.ts` according to your access and docs.
+## 💡 Tips
 
-Development
+- Use `desktop_list_projects` to discover your 8th Wall Desktop projects
+- Search PolyHaven for free 3D assets, textures, and HDRIs
+- Test AR features on a phone for camera preview
+- Use hider materials (`colorWrite: false`) for AR portal effects
+- Enable physics for dynamic objects
+- Use animations to bring your scenes to life
 
-- Type-check: `npm run typecheck`
-- Dev run with ts-node: `npm run dev`
+---
 
-HTTP bridge for n8n
+## 🙏 Acknowledgments
 
-If you want to call the server’s tools from n8n (via HTTP Request nodes), run the included HTTP bridge:
+- **8th Wall** for their amazing WebAR platform
+- **Anthropic** for Claude and the MCP protocol
+- **PolyHaven** for free 3D assets
+- **The MCP Community** for tools and inspiration
 
-- Build: `npm run build`
-- Start bridge: `HTTP_PORT=8787 MODE=local PROJECT_ROOT=./project npm run http`
-  - Defaults: host `127.0.0.1`, port `8787`. Configure with `HTTP_HOST` and `HTTP_PORT`.
-  - Lists tools: `GET http://127.0.0.1:8787/tools`
-  - Invoke a tool: `POST http://127.0.0.1:8787/tool/<toolName>` with JSON body (args).
+---
 
-Example n8n HTTP requests
-
-- Download a model into `project/assets/models/`:
-  - Method: POST
-  - URL: `http://127.0.0.1:8787/tool/assets_download_url`
-  - JSON Body:
-    `{ "url": "https://example.com/model.glb", "filename": "models/MyModel.glb" }`
-
-- Add the model to the scene (A‑Frame or Three.js auto-detected from `index.html`):
-  - Method: POST
-  - URL: `http://127.0.0.1:8787/tool/scene_add_gltf_model`
-  - JSON Body:
-    `{ "src": "assets/models/MyModel.glb", "position": [0,1.2,-2], "scale": [0.5,0.5,0.5] }`
-
-- Start the local dev server for preview:
-  - Method: POST
-  - URL: `http://127.0.0.1:8787/tool/devserver_start`
-  - JSON Body:
-    `{ "port": 5173 }`
-  - Response includes: `{ url: "http://127.0.0.1:5173/", running: true }`.
-
-**n8n Nodes**
-
-- A publishable n8n community package is included at `n8n-nodes-8thwall/`.
-- It adds a single flexible node “8th Wall MCP Tool” which calls the HTTP bridge tools.
-- Quick use:
-  - Build and run the HTTP bridge here (see above).
-  - Build the package: `cd n8n-nodes-8thwall && npm install && npm run build`.
-  - In n8n, enable Community Nodes and install from this folder (or from npm if published as `n8n-nodes-8thwall`).
-  - Create credentials “8th Wall MCP Bridge API” with Base URL `http://127.0.0.1:8787`.
-  - Add the node and choose a tool; pass Args (JSON) as shown in HTTP examples.
-
-Notes
-
-- The HTTP bridge reuses the same tool implementations as the MCP server; no duplication.
-- Use `PROJECT_ROOT` to point at your 8th Wall Desktop project for in‑place edits.
-- CORS is open (`*`) for convenience on localhost; lock down `HTTP_HOST`/reverse‑proxy in production contexts.
-
-Project structure
-
-- `src/index.ts`: Server entry. Registers tools/resources for docs or API modes.
-- `src/tools/docs.ts`: Docs-mode tools (fetch/read/search pages).
-- `src/tools/app.ts`: API-mode tools (list/get apps, mocked by default).
-- `src/clients/8thwallClient.ts`: Minimal HTTP client wrapper for API mode.
-- `src/types.ts`: Shared types for App/Scene.
- - `src/tools/assets.ts`: Asset search/download + unzip
- - `src/tools/project.ts`: Project tools (file ops, scaffold, export)
- - `src/tools/scene.ts`: Scene-building helpers (primitives, lights, models, env, etc.)
-
-Security
-
-Never commit real API keys. Use environment variables or your MCP client’s secret storage.
-
-Contributing & License
-
-- Contributions welcome! See `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
-- Security reports: see `SECURITY.md`.
-- License: MIT (see `LICENSE`).
+**Built with ❤️ by [Dwayne Paisley-Marshall](https://github.com/superdwayne)**
