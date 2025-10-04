@@ -57,6 +57,18 @@ async function main() {
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  
+  // Wait indefinitely - the server will handle stdio communication
+  // The process will exit when stdin closes or receives a termination signal
+  await new Promise<void>((resolve) => {
+    process.on("SIGINT", () => resolve());
+    process.on("SIGTERM", () => resolve());
+    
+    // Keep alive until stdin closes
+    process.stdin.on("end", () => resolve());
+  });
+  
+  await server.close();
 }
 
 main().catch((err) => {
