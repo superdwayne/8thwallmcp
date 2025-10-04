@@ -58,17 +58,12 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   
-  // Wait indefinitely - the server will handle stdio communication
-  // The process will exit when stdin closes or receives a termination signal
-  await new Promise<void>((resolve) => {
-    process.on("SIGINT", () => resolve());
-    process.on("SIGTERM", () => resolve());
-    
-    // Keep alive until stdin closes
-    process.stdin.on("end", () => resolve());
-  });
-  
-  await server.close();
+  // Explicitly keep process alive by preventing stdin from being garbage collected
+  // and ensuring the event loop has active handles
+  if (process.stdin.isTTY === false) {
+    process.stdin.resume(); // Keep stdin in flowing mode
+    process.stdin.ref(); // Ensure this keeps the event loop alive
+  }
 }
 
 main().catch((err) => {
