@@ -20,7 +20,9 @@
     "dev": "node --loader ts-node/esm src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "http": "node dist/http.js",
-    "dev:http": "node --loader ts-node/esm src/http.ts"
+    "dev:http": "node --loader ts-node/esm src/http.ts",
+    "pack:dxt": "npm run build && npx @anthropic-ai/dxt pack",
+    "install:dxt": "npm install -g @anthropic-ai/dxt"
   },
   "engines": {
     "node": ">=18"
