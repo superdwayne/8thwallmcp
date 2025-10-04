@@ -1,5 +1,5 @@
 {
-  "dxt_version": "1.0",
+  "manifest_version": "0.2",
   "name": "mcp-8thwall",
   "version": "0.1.0",
   "description": "8th Wall Desktop MCP Server - Build WebAR experiences with natural language",
@@ -14,7 +14,7 @@
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["dist/index.js"]
+      "args": ["${__dirname}/dist/index.js"]
     }
   },
   "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwN2NmZiIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+OHRoPC90ZXh0Pjwvc3ZnPg==",

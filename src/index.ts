@@ -16,7 +16,9 @@ const NAME = "mcp-8thwall";
 const VERSION = "0.1.0";
 
 async function main() {
+  console.error('[DEBUG] Starting main()');
   const mode = (process.env.MODE || "local").toLowerCase();
+  console.error(`[DEBUG] Mode: ${mode}`);
 
   const server = new McpServer(
     { name: NAME, version: VERSION },
@@ -27,6 +29,7 @@ async function main() {
       }
     }
   );
+  console.error('[DEBUG] McpServer created');
 
   // health.ping
   server.tool(
@@ -55,15 +58,33 @@ async function main() {
     registerDocsTools(server);
   }
 
+  console.error('[DEBUG] Creating StdioServerTransport');
   const transport = new StdioServerTransport();
+  console.error('[DEBUG] Calling server.connect()');
   await server.connect(transport);
+  console.error('[DEBUG] Server connected successfully');
   
-  // Explicitly keep process alive by preventing stdin from being garbage collected
-  // and ensuring the event loop has active handles
-  if (process.stdin.isTTY === false) {
-    process.stdin.resume(); // Keep stdin in flowing mode
-    process.stdin.ref(); // Ensure this keeps the event loop alive
-  }
+  // Keep the event loop alive with a timer
+  // This prevents Node.js from exiting after main() completes
+  console.error('[DEBUG] Setting up keepAlive interval');
+  const keepAlive = setInterval(() => {
+    console.error('[DEBUG] keepAlive tick');
+  }, 5000); // Every 5 seconds for debugging
+  
+  console.error('[DEBUG] main() function completed, keepAlive active');
+  
+  // Clean up on process termination
+  process.on('SIGINT', () => {
+    console.error('[DEBUG] Received SIGINT');
+    clearInterval(keepAlive);
+    process.exit(0);
+  });
+  
+  process.on('SIGTERM', () => {
+    console.error('[DEBUG] Received SIGTERM');
+    clearInterval(keepAlive);
+    process.exit(0);
+  });
 }
 
 main().catch((err) => {
