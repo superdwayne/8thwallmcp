@@ -11,6 +11,7 @@ import { registerComponentTools } from "./tools/desktopComponents.js";
 import { registerCodeGeneratorTools } from "./tools/codeGenerator.js";
 import { registerAssetDiscoveryTools } from "./tools/assetDiscovery.js";
 import { registerTemplateTools } from "./tools/templates.js";
+import { registerScriptTemplates } from "./tools/scriptTemplates.js";
 
 // MCP SDK imports
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -62,6 +63,7 @@ async function main() {
     registerCodeGeneratorTools(server);
     registerAssetDiscoveryTools(server);
     registerTemplateTools(server);
+    registerScriptTemplates(server);
     // Also include docs tools in local mode for convenience
     registerDocsTools(server);
   }
