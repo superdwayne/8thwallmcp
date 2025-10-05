@@ -1,6 +1,6 @@
 {
   "name": "mcp-8thwall",
-  "version": "0.1.0",
+  "version": "0.2.4",
   "private": true,
   "type": "module",
   "description": "MCP server for 8th Wall (docs or API modes)",
@@ -32,8 +32,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/node": "^22.18.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "@types/node": "^22.7.5"
+    "typescript": "^5.9.3"
   }
 }

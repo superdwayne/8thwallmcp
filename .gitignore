@@ -1,5 +1,36 @@
-node_modules/
-dist/
-.DS_Store
-.env
+# Test/debug MCPB packages
+*-test.mcpb
+*-withdeps.mcpb
+*-FINAL.mcpb
+*-slim.mcpb
+*-noimports.mcpb
+*-ORIGINAL.mcpb
 
+# Keep only the release version
+!mcp-8thwall-*.mcpb
+
+# Node
+node_modules/
+*.log
+
+# Build
+dist/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+.devserver.pid
+.mcp-server.pid
+
+# Cursor
+.cursor/

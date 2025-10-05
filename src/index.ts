@@ -6,6 +6,11 @@ import { registerPromptTools } from "./tools/prompts.js";
 import { registerDevServerTools } from "./tools/devserver.js";
 import { registerSceneTools } from "./tools/scene.js";
 import { registerDesktopTools } from "./tools/desktop.js";
+import { registerOrchestratorTools } from "./tools/orchestrator.js";
+import { registerComponentTools } from "./tools/desktopComponents.js";
+import { registerCodeGeneratorTools } from "./tools/codeGenerator.js";
+import { registerAssetDiscoveryTools } from "./tools/assetDiscovery.js";
+import { registerTemplateTools } from "./tools/templates.js";
 
 // MCP SDK imports
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -13,12 +18,10 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 
 const NAME = "mcp-8thwall";
-const VERSION = "0.1.0";
+const VERSION = "0.2.1";
 
 async function main() {
-  console.error('[DEBUG] Starting main()');
   const mode = (process.env.MODE || "local").toLowerCase();
-  console.error(`[DEBUG] Mode: ${mode}`);
 
   const server = new McpServer(
     { name: NAME, version: VERSION },
@@ -29,7 +32,6 @@ async function main() {
       }
     }
   );
-  console.error('[DEBUG] McpServer created');
 
   // health.ping
   server.tool(
@@ -54,41 +56,21 @@ async function main() {
     registerDevServerTools(server);
     registerSceneTools(server);
     registerDesktopTools(server);
+    // New advanced tools
+    registerOrchestratorTools(server);
+    registerComponentTools(server);
+    registerCodeGeneratorTools(server);
+    registerAssetDiscoveryTools(server);
+    registerTemplateTools(server);
     // Also include docs tools in local mode for convenience
     registerDocsTools(server);
   }
 
-  console.error('[DEBUG] Creating StdioServerTransport');
   const transport = new StdioServerTransport();
-  console.error('[DEBUG] Calling server.connect()');
   await server.connect(transport);
-  console.error('[DEBUG] Server connected successfully');
-  
-  // Keep the event loop alive with a timer
-  // This prevents Node.js from exiting after main() completes
-  console.error('[DEBUG] Setting up keepAlive interval');
-  const keepAlive = setInterval(() => {
-    console.error('[DEBUG] keepAlive tick');
-  }, 5000); // Every 5 seconds for debugging
-  
-  console.error('[DEBUG] main() function completed, keepAlive active');
-  
-  // Clean up on process termination
-  process.on('SIGINT', () => {
-    console.error('[DEBUG] Received SIGINT');
-    clearInterval(keepAlive);
-    process.exit(0);
-  });
-  
-  process.on('SIGTERM', () => {
-    console.error('[DEBUG] Received SIGTERM');
-    clearInterval(keepAlive);
-    process.exit(0);
-  });
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error("Fatal:", err);
   process.exit(1);
 });

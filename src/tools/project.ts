@@ -12,10 +12,10 @@ type Server = any;
 function desktopBaseDir(): string {
   if (process.env.EIGHTHWALL_DESKTOP_ROOT) return process.env.EIGHTHWALL_DESKTOP_ROOT;
   const home = os.homedir();
-  const a = path.join(home, "Documents", "8th Wall");
-  const b = path.join(home, "Documents", "8th-Wall");
-  // Prefer the path that exists (supports both "8th Wall" and "8th-Wall")
-  return (fscExistsSync(b) ? b : (fscExistsSync(a) ? a : b));
+  const withSpace = path.join(home, "Documents", "8th Wall");
+  const withHyphen = path.join(home, "Documents", "8th-Wall");
+  // Prefer "8th Wall" (with space) - the official 8th Wall Desktop location
+  return (fscExistsSync(withSpace) ? withSpace : (fscExistsSync(withHyphen) ? withHyphen : withSpace));
 }
 
 function fscExistsSync(p: string): boolean {

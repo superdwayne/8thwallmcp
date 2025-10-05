@@ -10,7 +10,7 @@
 
 Click below to install with one click into Claude Desktop:
 
-[![Install with MCPB](https://img.shields.io/badge/Install%20with-MCPB-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/latest/download/mcp-8thwall-0.1.0.mcpb)
+[![Install with MCPB](https://img.shields.io/badge/Install%20with-MCPB-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/latest/download/mcp-8thwall-0.2.4.mcpb)
 
 **Download and double-click to install!** No terminal commands, no configuration files.
 
@@ -18,27 +18,50 @@ Click below to install with one click into Claude Desktop:
 
 ## ✨ What's New
 
-### Latest Updates (v0.1.0)
+### Latest Updates (v0.2.4) 🚀
 
-- ✅ **Fixed geometry properties** - Cylinders and cones now render correctly in 8th Wall Desktop
-- ✅ **MCPB 0.2 support** - Updated to latest Desktop Extension format
-- ✅ **Material rendering fix** - Colors now display properly using `basic` materials
-- ✅ **AR Portal support** - Create AR portals with hider/occluder materials
-- ✅ **Image Target support** - Build image tracking experiences
-- ✅ **Video texture support** - Add videos to your AR scenes
-- ✅ **Animation tools** - Rotation and scale animations for objects
-- ✅ **Model animations** - Control GLB/GLTF animation playback
+- 🤖 **AI-Powered AR Creation** - Create complete AR experiences from natural language descriptions
+- 🎨 **6 Experience Templates** - Light painting, model showcase, portals, face filters, and more
+- 💻 **Code Generation** - Generate custom JavaScript components from natural language
+- 🧩 **Custom Components** - Add and manage custom A-Frame components in your projects
+- 🔍 **Unified Asset Discovery** - Search PolyHaven assets with smart recommendations
+- 📦 **Only 2MB** - Optimized package size with all dependencies bundled
+- 🎯 **Smart Orchestration** - Analyzes your requests and chains the right tools automatically
+
+### Previous Updates (v0.1.0)
+
+- ✅ Fixed geometry properties for cylinders and cones
+- ✅ MCPB 0.2 support for Claude Desktop
+- ✅ Material rendering with proper color display
+- ✅ AR Portal support with hider/occluder materials
+- ✅ Image Target and Video texture support
+- ✅ Animation system (rotation, scale, model playback)
 
 ## 🎯 Features
 
-### 🛠️ **47 Tools for 8th Wall Development**
+### 🛠️ **66+ Tools for Advanced AR Development**
 
+#### 🤖 AI-Powered Creation (NEW!)
+- **Smart Orchestration** - `create_ar_experience` - Build complete AR experiences from descriptions
+- **Pattern Recognition** - Automatically identifies AR experience types (face tracking, image targets, etc.)
+- **Code Generation** - Generate custom JavaScript from natural language
+- **Experience Templates** - 6 pre-built templates (light painting, portals, face filters, etc.)
+
+#### 🧩 Custom Development (NEW!)
+- **Custom Components** - Add and manage A-Frame components
+- **Asset Discovery** - Search PolyHaven with smart recommendations
+- **Code Templates** - Pre-built particle systems, gesture handlers, audio controllers
+- **JavaScript Validation** - Check code for errors before deployment
+
+#### 🎨 Scene Building
 - **Desktop Scene Building** - Add shapes, models, lights, and animations
 - **AR Features** - Image targets, face tracking, world tracking
-- **Asset Management** - Search PolyHaven, download models, manage files
-- **Project Tools** - Create, edit, and manage 8th Wall Desktop projects
 - **Animation System** - Rotation, scale, and model animations
 - **Physics** - Add physics to objects (dynamics, mass, gravity)
+
+#### 📦 Asset & Project Management
+- **Asset Management** - Search PolyHaven, download models, manage files
+- **Project Tools** - Create, edit, and manage 8th Wall Desktop projects
 - **Dev Server** - Built-in preview server for testing
 
 ### 🎨 **Natural Language Scene Building**
