@@ -8,34 +8,38 @@
 
 ## 🚀 One-Click Install
 
-Click below to install with one click into Claude Desktop:
+**Download the latest version:**
 
-[![Install with MCPB](https://img.shields.io/badge/Install%20with-MCPB-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/latest/download/mcp-8thwall-0.2.4.mcpb)
+[![Download v0.2.5](https://img.shields.io/badge/Download-v0.2.5--threejs.mcpb-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.5/mcp-8thwall-0.2.5-threejs.mcpb)
 
-**Download and double-click to install!** No terminal commands, no configuration files.
+**📦 Size:** 6.3 MB | **🆕 Three.js Script Generator included!**
+
+**Double-click to install!** No terminal commands, no configuration files.
 
 ---
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.4) 🚀
+### Latest Updates (v0.2.5) 🎨
 
-- 🤖 **AI-Powered AR Creation** - Create complete AR experiences from natural language descriptions
-- 🎨 **6 Experience Templates** - Light painting, model showcase, portals, face filters, and more
-- 💻 **Code Generation** - Generate custom JavaScript components from natural language
-- 🧩 **Custom Components** - Add and manage custom A-Frame components in your projects
-- 🔍 **Unified Asset Discovery** - Search PolyHaven assets with smart recommendations
-- 📦 **Only 2MB** - Optimized package size with all dependencies bundled
-- 🎯 **Smart Orchestration** - Analyzes your requests and chains the right tools automatically
+**NEW: Three.js Script Generator!**
 
-### Previous Updates (v0.1.0)
+- 🎯 **`desktop_add_threejs_script`** - Generate battle-tested Three.js scripts for AR interactions
+- ✅ **Proper XR8 Integration** - Handles pipeline initialization, scene access, and camera setup correctly
+- 📱 **AR-Tested** - Works perfectly on mobile devices with touch/click interactions
+- 🎨 **Interactive Objects** - Creates tap-to-change-color spheres, particle systems, and more
+- 📍 **Optimal Positioning** - Places objects 5m ahead at eye level with proper FOV
+- 🐛 **Comprehensive Logging** - Detailed debugging output for troubleshooting
+- 📦 **6.3 MB** - Includes all dependencies and templates
 
-- ✅ Fixed geometry properties for cylinders and cones
-- ✅ MCPB 0.2 support for Claude Desktop
-- ✅ Material rendering with proper color display
-- ✅ AR Portal support with hider/occluder materials
-- ✅ Image Target and Video texture support
-- ✅ Animation system (rotation, scale, model playback)
+### Previous Updates (v0.2.4)
+
+- 🤖 **AI-Powered AR Creation** - Create complete AR experiences from natural language
+- 🎨 **6 Experience Templates** - Light painting, model showcase, portals, face filters
+- 💻 **Code Generation** - Generate custom JavaScript components
+- 🧩 **Custom Components** - Add and manage A-Frame components
+- 🔍 **Unified Asset Discovery** - Search PolyHaven assets with recommendations
+- 🎯 **Smart Orchestration** - Analyzes requests and chains tools automatically
 
 ## 🎯 Features
 
