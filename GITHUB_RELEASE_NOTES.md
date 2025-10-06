@@ -18,14 +18,14 @@ Creates working Three.js scripts that:
 
 ### 📦 Installation
 
-Download the bundle: **`mcp-8thwall-Creator.mcpb`** (6.3 MB)
+Download the bundle: **`mcp-8thwall-0.2.5-threejs.mcpb`** (6.3 MB)
 
 Add to your MCP configuration in Cursor:
 ```json
 {
   "mcpServers": {
     "8thwall": {
-      "command": "path/to/mcp-8thwall-Creator.mcpb"
+      "command": "path/to/mcp-8thwall-0.2.5-threejs.mcpb"
     }
   }
 }
