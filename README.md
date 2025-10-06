@@ -10,9 +10,9 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.9/mcp-8thwall-0.2.9-no-aframe.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.10/mcp-8thwall-0.2.10-fixed.mcpb)
 
-**📦 6.3 MB** • **🎨 Pure Three.js** • **📱 AR-Tested** • **🚫 No A-Frame**
+**📦 6.3 MB** • **🎨 Pure Three.js** • **📱 AR-Tested** • **🐛 Bug Fixes**
 
 **Double-click to install!** No terminal commands, no configuration files.
 
@@ -20,16 +20,24 @@
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.9) 🔥
+### Latest Updates (v0.2.10) 🐛
 
-**A-FRAME COMPONENTS COMPLETELY REMOVED!**
+**FIXED: ECS ATTRIBUTE ERRORS**
+
+- 🐛 **Fixed "No attribute registered" Error** - Disabled broken animation tools
+- ❌ **Broken Tools Removed** - `desktop_add_rotation_animation` and `desktop_add_scale_animation` disabled
+- ✅ **Use Three.js Animations** - All animations now use `desktop_add_threejs_script`
+- 🎯 **No More Runtime Errors** - Zero ECS attribute errors in Desktop projects
+- 📝 **Helpful Error Messages** - Broken tools now guide you to the correct approach
+- 🚀 **Stable & Reliable** - All working tools tested and verified
+
+### Previous Updates (v0.2.9) 🔥
+
+**A-FRAME COMPONENTS COMPLETELY REMOVED**
 
 - 🗑️ **Deleted All A-Frame Components** - Removed particleSystem.js, audioController.js, gestureHandler.js, physicsHelper.js
 - ✅ **No More AFRAME Errors** - Zero chance of "Can't find variable: AFRAME" errors
 - ⚠️ **Clear Tool Warnings** - A-Frame tools now clearly marked as "WEB PROJECTS ONLY"
-- 🎯 **Three.js Only for Desktop** - Desktop projects exclusively use Three.js (no A-Frame)
-- 🛠️ **Use Correct Tools** - `desktop_add_threejs_script` for Desktop, A-Frame tools for web only
-- 🚀 **Faster, Cleaner** - No unnecessary A-Frame code in your Desktop projects
 
 ### Previous Updates (v0.2.8) 📚
 
