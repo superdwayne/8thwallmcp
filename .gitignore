@@ -1,13 +1,8 @@
-# Test/debug MCPB packages
-*-test.mcpb
-*-withdeps.mcpb
-*-FINAL.mcpb
-*-slim.mcpb
-*-noimports.mcpb
-*-ORIGINAL.mcpb
+# Ignore ALL old .mcpb bundles - only upload to GitHub Releases!
+*.mcpb
 
-# Keep only the release version
-!mcp-8thwall-*.mcpb
+# Exception: Only track the latest release version
+!mcp-8thwall-0.2.5-threejs.mcpb
 
 # Node
 node_modules/
