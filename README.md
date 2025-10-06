@@ -10,9 +10,9 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.8/mcp-8thwall-0.2.8-desktop-threejs.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.9/mcp-8thwall-0.2.9-no-aframe.mcpb)
 
-**📦 6.3 MB** • **🎨 Three.js Script Generator** • **📱 AR-Tested**
+**📦 6.3 MB** • **🎨 Pure Three.js** • **📱 AR-Tested** • **🚫 No A-Frame**
 
 **Double-click to install!** No terminal commands, no configuration files.
 
@@ -20,16 +20,25 @@
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.8) 🎯
+### Latest Updates (v0.2.9) 🔥
 
-**CRITICAL: Desktop Uses Three.js ONLY (Not A-Frame!)**
+**A-FRAME COMPONENTS COMPLETELY REMOVED!**
+
+- 🗑️ **Deleted All A-Frame Components** - Removed particleSystem.js, audioController.js, gestureHandler.js, physicsHelper.js
+- ✅ **No More AFRAME Errors** - Zero chance of "Can't find variable: AFRAME" errors
+- ⚠️ **Clear Tool Warnings** - A-Frame tools now clearly marked as "WEB PROJECTS ONLY"
+- 🎯 **Three.js Only for Desktop** - Desktop projects exclusively use Three.js (no A-Frame)
+- 🛠️ **Use Correct Tools** - `desktop_add_threejs_script` for Desktop, A-Frame tools for web only
+- 🚀 **Faster, Cleaner** - No unnecessary A-Frame code in your Desktop projects
+
+### Previous Updates (v0.2.8) 📚
+
+**Documentation Clarity**
 
 - 🎯 **Documentation Added** - Clear explanation: Desktop = Three.js, NOT A-Frame
 - ✅ **No More Confusion** - A-Frame is only for web projects, not Desktop
 - 📚 **DESKTOP_THREEJS_ONLY.md** - Complete guide to proper Desktop development
 - 🛠️ **Right Tools** - Use `desktop_add_threejs_script` for Desktop projects
-- 🚫 **Stop Using** - Don't use A-Frame components in Desktop (.expanse.json) projects
-- ⚡ **Pure Three.js** - Direct Three.js API usage for all Desktop work
 
 ### Previous Updates (v0.2.7) 🛡️
 

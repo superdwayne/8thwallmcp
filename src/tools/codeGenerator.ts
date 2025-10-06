@@ -338,13 +338,13 @@ export function registerCodeGeneratorTools(server: Server) {
   // generate_custom_javascript - Main code generation tool
   server.tool(
     "generate_custom_javascript",
-    "Generate custom JavaScript code from a natural language description. Can create A-Frame components, scene scripts, or utility functions.",
+    "⚠️ WEB PROJECTS ONLY - NOT FOR DESKTOP! Generate A-Frame components for web-based projects. For Desktop (.expanse.json), use desktop_add_threejs_script instead!",
     {
       description: z.string().describe("Natural language description of the desired behavior"),
       type: z.enum(['component', 'script', 'utility']).default('component').describe("Type of code to generate"),
       componentName: z.string().optional().describe("Name for the component (required if type is 'component')"),
       validate: z.boolean().optional().default(true).describe("Validate generated code before returning"),
-      useTemplate: z.string().optional().describe("Use a pre-built template (particle-system, gesture-handler, tap-handler, audio-controller)")
+      useTemplate: z.string().optional().describe("⚠️ A-Frame templates for WEB only (particle-system, gesture-handler, tap-handler, audio-controller)")
     },
     async (args: any) => {
       const description = String(args.description);

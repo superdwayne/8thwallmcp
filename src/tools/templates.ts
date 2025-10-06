@@ -172,11 +172,12 @@ document.body.appendChild(uiContainer);`
   
   'physics-playground': {
     name: 'Physics Playground',
-    description: 'Interactive physics-enabled objects',
+    description: 'Interactive physics-enabled objects (Three.js)',
     category: 'Interactive',
-    components: ['physicsHelper.js'],
+    components: [],
     steps: [
-      'Add ground plane (static physics)',
+      'Install physics library (e.g., Cannon.js or Ammo.js)',
+      'Add ground plane with static physics body',
       'Add physics-enabled objects (dynamic)',
       'Configure mass and restitution',
       'Add tap interaction to spawn objects',

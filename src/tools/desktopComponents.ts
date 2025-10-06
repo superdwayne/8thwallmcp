@@ -65,7 +65,7 @@ export function registerComponentTools(server: Server) {
   // desktop_add_custom_component - Register custom A-Frame component
   server.tool(
     "desktop_add_custom_component",
-    "Add a custom A-Frame component to your 8th Wall Desktop project",
+    "⚠️ WEB PROJECTS ONLY - NOT FOR DESKTOP! Add a custom A-Frame component for web-based 8th Wall projects (requires index.html with A-Frame). Desktop projects (.expanse.json) use Three.js directly - use desktop_add_threejs_script instead!",
     {
       componentName: z.string().describe("Name of the component (e.g., 'light-painter', 'gesture-handler')"),
       componentCode: z.string().describe("Full JavaScript code for the A-Frame component"),
