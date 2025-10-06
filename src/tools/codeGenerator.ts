@@ -3,9 +3,52 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 type Server = McpServer;
 
+// Safe AFRAME wrapper that checks for existence and waits for load
+const SAFE_AFRAME_WRAPPER = `
+// Safe AFRAME registration - waits for load and checks existence
+(function() {
+  console.log('[MCP] Checking AFRAME availability...');
+  
+  function safeRegister() {
+    if (typeof AFRAME === 'undefined') {
+      console.error('[MCP] AFRAME is not defined. Using Three.js instead.');
+      console.log('[MCP] If you need A-Frame, add: <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>');
+      return false;
+    }
+    console.log('[MCP] AFRAME detected, registering component...');
+    return true;
+  }
+  
+  function registerComponent() {
+    if (!safeRegister()) return;
+    
+    try {
+`;
+
+const SAFE_AFRAME_WRAPPER_END = `
+      console.log('[MCP] Component registered successfully');
+    } catch (error) {
+      console.error('[MCP] Error registering component:', error);
+    }
+  }
+  
+  // Wait for window load event
+  if (document.readyState === 'complete') {
+    console.log('[MCP] Document already loaded, registering immediately');
+    registerComponent();
+  } else {
+    console.log('[MCP] Waiting for window load event...');
+    window.addEventListener('load', function() {
+      console.log('[MCP] Window loaded, registering component');
+      setTimeout(registerComponent, 100); // Small delay to ensure scene is ready
+    });
+  }
+})();
+`;
+
 // Component templates for common patterns
 const COMPONENT_TEMPLATES = {
-  'particle-system': `AFRAME.registerComponent('particle-system', {
+  'particle-system': `${SAFE_AFRAME_WRAPPER}AFRAME.registerComponent('particle-system', {
   schema: {
     maxParticles: { type: 'number', default: 500 },
     particleSize: { type: 'number', default: 0.01 },
@@ -77,9 +120,9 @@ const COMPONENT_TEMPLATES = {
       this.removeParticle(this.particles[0]);
     }
   }
-});`,
+});${SAFE_AFRAME_WRAPPER_END}`,
 
-  'gesture-handler': `AFRAME.registerComponent('gesture-handler', {
+  'gesture-handler': `${SAFE_AFRAME_WRAPPER}AFRAME.registerComponent('gesture-handler', {
   schema: {
     enabled: { type: 'boolean', default: true },
     preventDefault: { type: 'boolean', default: true }
@@ -150,9 +193,9 @@ const COMPONENT_TEMPLATES = {
     this.el.sceneEl.removeEventListener('touchmove', this.onTouchMove);
     this.el.sceneEl.removeEventListener('touchend', this.onTouchEnd);
   }
-});`,
+});${SAFE_AFRAME_WRAPPER_END}`,
 
-  'tap-handler': `AFRAME.registerComponent('tap-handler', {
+  'tap-handler': `${SAFE_AFRAME_WRAPPER}AFRAME.registerComponent('tap-handler', {
   schema: {
     event: { type: 'string', default: 'tap' }
   },
@@ -184,9 +227,9 @@ const COMPONENT_TEMPLATES = {
     this.el.removeEventListener('touchstart', this.onTouchStart);
     this.el.removeEventListener('touchend', this.onTouchEnd);
   }
-});`,
+});${SAFE_AFRAME_WRAPPER_END}`,
 
-  'audio-controller': `AFRAME.registerComponent('audio-controller', {
+  'audio-controller': `${SAFE_AFRAME_WRAPPER}AFRAME.registerComponent('audio-controller', {
   schema: {
     src: { type: 'string' },
     autoplay: { type: 'boolean', default: false },
@@ -251,7 +294,7 @@ const COMPONENT_TEMPLATES = {
       this.el.object3D.remove(this.sound);
     }
   }
-});`
+});${SAFE_AFRAME_WRAPPER_END}`
 };
 
 // Validate generated code
@@ -340,7 +383,7 @@ export function registerCodeGeneratorTools(server: Server) {
       } else {
         // Generate basic component structure
         const name = componentName || 'custom-component';
-        generatedCode = `AFRAME.registerComponent('${name}', {
+        generatedCode = `${SAFE_AFRAME_WRAPPER}AFRAME.registerComponent('${name}', {
   schema: {
     // Define component properties here
     enabled: { type: 'boolean', default: true }
@@ -364,7 +407,7 @@ export function registerCodeGeneratorTools(server: Server) {
   remove: function () {
     // Cleanup when component is removed
   }
-});`;
+});${SAFE_AFRAME_WRAPPER_END}`;
       }
       
       // Validate if requested

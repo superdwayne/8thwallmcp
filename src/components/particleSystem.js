@@ -2,6 +2,25 @@
 // Creates and manages 3D particles with fading effects
 // Usage: Add 'particle-system' component to your <a-scene>
 
+// Safe AFRAME registration - waits for load and checks existence
+(function() {
+  console.log('[MCP] Checking AFRAME availability for particle-system...');
+  
+  function safeRegister() {
+    if (typeof AFRAME === 'undefined') {
+      console.error('[MCP] AFRAME is not defined. Please add A-Frame script tag.');
+      console.log('[MCP] Add: <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>');
+      return false;
+    }
+    console.log('[MCP] AFRAME detected, registering particle-system component...');
+    return true;
+  }
+  
+  function registerComponent() {
+    if (!safeRegister()) return;
+    
+    try {
+
 AFRAME.registerComponent('particle-system', {
   schema: {
     maxParticles: { type: 'number', default: 500 },
@@ -105,4 +124,23 @@ AFRAME.registerComponent('particle-system', {
     }
   }
 });
+
+      console.log('[MCP] particle-system component registered successfully');
+    } catch (error) {
+      console.error('[MCP] Error registering particle-system component:', error);
+    }
+  }
+  
+  // Wait for window load event
+  if (document.readyState === 'complete') {
+    console.log('[MCP] Document already loaded, registering immediately');
+    registerComponent();
+  } else {
+    console.log('[MCP] Waiting for window load event...');
+    window.addEventListener('load', function() {
+      console.log('[MCP] Window loaded, registering component');
+      setTimeout(registerComponent, 100); // Small delay to ensure scene is ready
+    });
+  }
+})();
 
