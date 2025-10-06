@@ -641,7 +641,7 @@ export function registerDesktopTools(server: Server) {
   // desktop_add_rotation_animation
   server.tool(
     "desktop_add_rotation_animation",
-    "Add rotation animation to an object by name",
+    "⚠️ BROKEN - DO NOT USE! Adds unregistered attributes causing 'No attribute registered' errors. Use desktop_add_threejs_script to create custom Three.js animations instead!",
     {
       objectName: z.string().describe("Name of the object to animate"),
       axis: z.enum(["x", "y", "z"]).describe("Axis to rotate around"),
@@ -652,54 +652,12 @@ export function registerDesktopTools(server: Server) {
       easeOut: z.boolean().optional().default(false).describe("Ease out at end"),
     },
     async (args: any) => {
-      const data = await readExpanseJson();
-      
-      // Find object by name
-      const objectId = Object.keys(data.objects).find(id => 
-        data.objects[id].name === args.objectName
-      );
-      
-      if (!objectId) {
-        return { 
-          content: [{ type: "text", text: `Error: Object "${args.objectName}" not found` }],
-          isError: true 
-        };
-      }
-      
-      const obj = data.objects[objectId];
-      
-      // Calculate duration from speed
-      const duration = 360 / args.degreesPerSecond;
-      
-      // Create rotation animation attribute
-      const rotateAnimation = {
-        autoFrom: true,
-        toX: args.axis === 'x' ? 360 : 0,
-        toY: args.axis === 'y' ? 360 : 0,
-        toZ: args.axis === 'z' ? 360 : 0,
-        shortestPath: false,
-        duration: duration,
-        loop: args.loop,
-        reverse: args.reverse,
-        easeIn: args.easeIn,
-        easeOut: args.easeOut,
-        easingFunction: 'linear'
-      };
-      
-      // Add or update attributes
-      if (!obj.attributes) {
-        obj.attributes = {};
-      }
-      
-      obj.attributes.RotateAnimation = rotateAnimation;
-      
-      await writeExpanseJson(data);
-      
-      return { 
-        content: [{ 
-          type: "text", 
-          text: `✅ Added rotation animation to "${args.objectName}" (${args.degreesPerSecond}°/sec around ${args.axis}-axis, duration: ${duration.toFixed(2)}s)` 
-        }] 
+      return {
+        content: [{
+          type: "text",
+          text: `❌ TOOL DISABLED - This tool adds unregistered ECS attributes causing errors.\n\n✅ Use desktop_add_threejs_script instead to create Three.js animations!\n\nExample: "Create a script that rotates ${args.objectName} around the ${args.axis}-axis"`
+        }],
+        isError: true
       };
     }
   );
@@ -707,7 +665,7 @@ export function registerDesktopTools(server: Server) {
   // desktop_add_scale_animation
   server.tool(
     "desktop_add_scale_animation",
-    "Add scale (pulse/breathe) animation to an object by name",
+    "⚠️ BROKEN - DO NOT USE! Adds unregistered attributes causing 'No attribute registered' errors. Use desktop_add_threejs_script to create custom Three.js animations instead!",
     {
       objectName: z.string().describe("Name of the object to animate"),
       minScale: z.number().optional().default(0.8).describe("Minimum scale multiplier (e.g., 0.8 = 80% of original size)"),
@@ -719,50 +677,12 @@ export function registerDesktopTools(server: Server) {
       easeOut: z.boolean().optional().default(true).describe("Ease out at end"),
     },
     async (args: any) => {
-      const data = await readExpanseJson();
-      
-      // Find object by name
-      const objectId = Object.keys(data.objects).find(id => 
-        data.objects[id].name === args.objectName
-      );
-      
-      if (!objectId) {
-        return { 
-          content: [{ type: "text", text: `Error: Object "${args.objectName}" not found` }],
-          isError: true 
-        };
-      }
-      
-      const obj = data.objects[objectId];
-      
-      // Create scale animation attribute
-      const scaleAnimation = {
-        autoFrom: true,
-        toX: args.maxScale,
-        toY: args.maxScale,
-        toZ: args.maxScale,
-        duration: args.duration,
-        loop: args.loop,
-        reverse: args.reverse,
-        easeIn: args.easeIn,
-        easeOut: args.easeOut,
-        easingFunction: 'linear'
-      };
-      
-      // Add or update attributes
-      if (!obj.attributes) {
-        obj.attributes = {};
-      }
-      
-      obj.attributes.ScaleAnimation = scaleAnimation;
-      
-      await writeExpanseJson(data);
-      
-      return { 
-        content: [{ 
-          type: "text", 
-          text: `✅ Added scale animation to "${args.objectName}" (${args.minScale}x to ${args.maxScale}x over ${args.duration}s)` 
-        }] 
+      return {
+        content: [{
+          type: "text",
+          text: `❌ TOOL DISABLED - This tool adds unregistered ECS attributes causing errors.\n\n✅ Use desktop_add_threejs_script instead to create Three.js animations!\n\nExample: "Create a script that animates ${args.objectName} scale from ${args.minScale} to ${args.maxScale}"`
+        }],
+        isError: true
       };
     }
   );

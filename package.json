@@ -1,6 +1,6 @@
 {
   "name": "mcp-8thwall",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "private": true,
   "type": "module",
   "description": "MCP server for 8th Wall (docs or API modes)",
