@@ -10,7 +10,7 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.6/mcp-8thwall-0.2.6-threejs-default.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.7/mcp-8thwall-0.2.7-aframe-safe.mcpb)
 
 **📦 6.3 MB** • **🎨 Three.js Script Generator** • **📱 AR-Tested**
 
@@ -20,7 +20,18 @@
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.6) 🚀
+### Latest Updates (v0.2.7) 🛡️
+
+**AFRAME Safety Checks - Zero Runtime Errors!**
+
+- 🛡️ **Safe AFRAME Registration** - All components now check for AFRAME before registering
+- ⏱️ **Load Event Waiting** - Components wait for window 'load' event before initialization
+- 🐛 **Zero Runtime Errors** - Eliminated "Can't find variable: AFRAME" errors
+- 📝 **Comprehensive Logging** - Detailed console messages for debugging
+- ✅ **Graceful Fallback** - Helpful error messages guide users to add A-Frame if needed
+- 🔄 **Webpack HMR Compatible** - No more disconnection issues
+
+### Previous Updates (v0.2.6) 🚀
 
 **Three.js is Now the Default Framework!**
 
