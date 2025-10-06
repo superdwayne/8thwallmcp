@@ -114,7 +114,10 @@ export function registerSceneTools(server: Server) {
     },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const src = String(args.src);
       const pos = (args.position as number[] | undefined) || [0, 1, -2];
       const rot = (args.rotation as number[] | undefined) || [0, 0, 0];
@@ -151,7 +154,10 @@ export function registerSceneTools(server: Server) {
     async (args: any) => {
       const color = String(args.color);
       let html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       if (engine === "aframe") {
         html = setAframeBackground(html, color);
         await writeFileText("index.html", html);
@@ -188,7 +194,10 @@ export function registerSceneTools(server: Server) {
     },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const type = args.type as "box" | "sphere" | "cylinder" | "plane";
       const color = String(args.color || "#FFD166");
       const pos = (args.position as number[] | undefined) || [0, 1, -2];
@@ -245,7 +254,10 @@ export function registerSceneTools(server: Server) {
     },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const kind = args.kind as "ambient" | "hemisphere" | "directional" | "point";
       const color = String(args.color || "#ffffff");
       const intensity = Number(args.intensity ?? 1.0);
@@ -287,7 +299,10 @@ export function registerSceneTools(server: Server) {
     { url: z.string(), applyBackground: z.boolean().optional() },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const url = String(args.url);
       const applyBg = args.applyBackground !== false;
 
@@ -327,7 +342,10 @@ export function registerSceneTools(server: Server) {
     { type: z.enum(["spin"]).optional(), speed: z.number().optional() },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const speed = Number(args.speed ?? 0.01);
 
       if (engine === "aframe") {
@@ -364,7 +382,10 @@ export function registerSceneTools(server: Server) {
     { url: z.string(), width: z.number().optional(), height: z.number().optional(), position: z.array(z.number()).length(3).optional(), rotation: z.array(z.number()).length(3).optional() },
     async (args: any) => {
       const html = await readFileText("index.html");
-      const engine = detectEngineFromIndexHtml(html);
+      let engine = detectEngineFromIndexHtml(html);
+      // Default to Three.js if engine is unknown
+      if (engine === "unknown") engine = "three";
+      
       const url = String(args.url);
       const w = Number(args.width ?? 2);
       const h = Number(args.height ?? 2);

@@ -1,8 +1,8 @@
 {
   "dxt_version": "0.2",
   "name": "mcp-8thwall",
-  "version": "0.2.4",
-  "description": "8th Wall Desktop MCP Server - Build WebAR experiences with natural language",
+  "version": "0.2.6",
+  "description": "8th Wall Desktop MCP Server - Build WebAR experiences with natural language (Three.js default)",
   "author": {
     "name": "Dwayne Paisley-Marshall",
     "email": "your.email@example.com",

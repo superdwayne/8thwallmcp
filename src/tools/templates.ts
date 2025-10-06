@@ -23,53 +23,109 @@ interface TemplateConfig {
 const TEMPLATES: Record<string, TemplateConfig> = {
   'light-painting': {
     name: 'Light Painting',
-    description: 'Touch-based particle drawing system with color picker',
+    description: 'Touch-based particle drawing system with color picker (Three.js)',
     category: 'Interactive',
-    components: ['particleSystem.js', 'gestureHandler.js'],
+    components: [],
     steps: [
-      'Add particle-system component to scene',
-      'Add gesture-handler component to scene',
+      'Create Three.js scene with camera and renderer',
+      'Add touch/mouse event listeners',
+      'Create particle system with THREE.Points',
       'Create UI for color selection',
-      'Wire up gesture events to create particles',
-      'Add clear button'
+      'Add clear button to reset particles'
     ],
-    customCode: `// Light Painting Integration
-window.addEventListener('load', () => {
-  const scene = document.querySelector('a-scene');
-  const particleSystem = scene.components['particle-system'];
+    customCode: `// Light Painting Integration (Three.js)
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+// Particle system state
+let currentColor = '#FFD700';
+const particles = [];
+const maxParticles = 1000;
+
+// Create particle geometry
+const particleGeometry = new THREE.BufferGeometry();
+const particleMaterial = new THREE.PointsMaterial({
+  size: 0.05,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.8
+});
+const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particleSystem);
+
+// Touch/mouse handler
+function onPointerMove(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   
-  // Listen to gesture events
-  scene.addEventListener('gesture-move', (evt) => {
-    if (particleSystem && evt.detail.worldPosition) {
-      particleSystem.createParticle(evt.detail.worldPosition);
-    }
+  const vector = new THREE.Vector3(x, y, 0.5);
+  vector.unproject(camera);
+  const dir = vector.sub(camera.position).normalize();
+  const distance = -camera.position.z / dir.z;
+  const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+  
+  addParticle(pos);
+}
+
+function addParticle(position) {
+  const color = new THREE.Color(currentColor);
+  particles.push({ position: position.clone(), color });
+  
+  if (particles.length > maxParticles) particles.shift();
+  updateParticleSystem();
+}
+
+function updateParticleSystem() {
+  const positions = new Float32Array(particles.length * 3);
+  const colors = new Float32Array(particles.length * 3);
+  
+  particles.forEach((p, i) => {
+    positions[i * 3] = p.position.x;
+    positions[i * 3 + 1] = p.position.y;
+    positions[i * 3 + 2] = p.position.z;
+    colors[i * 3] = p.color.r;
+    colors[i * 3 + 1] = p.color.g;
+    colors[i * 3 + 2] = p.color.b;
   });
   
-  // Create color picker UI
-  const uiContainer = document.createElement('div');
-  uiContainer.id = 'color-picker-ui';
-  uiContainer.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 10px; z-index: 1000;';
-  
-  const colors = ['#FFD700', '#FF69B4', '#00FFFF', '#7FFF00', '#FF4500', '#800080'];
-  colors.forEach(color => {
-    const btn = document.createElement('button');
-    btn.style.cssText = \`width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; background: \${color}; cursor: pointer;\`;
-    btn.addEventListener('click', () => {
-      if (particleSystem) particleSystem.setColor(color);
-    });
-    uiContainer.appendChild(btn);
-  });
-  
-  const clearBtn = document.createElement('button');
-  clearBtn.textContent = 'Clear';
-  clearBtn.style.cssText = 'padding: 10px 20px; border-radius: 5px; border: none; background: #FF0000; color: white; cursor: pointer;';
-  clearBtn.addEventListener('click', () => {
-    if (particleSystem) particleSystem.clearAll();
-  });
-  uiContainer.appendChild(clearBtn);
-  
-  document.body.appendChild(uiContainer);
-});`
+  particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+}
+
+// Event listeners
+let isDrawing = false;
+renderer.domElement.addEventListener('mousedown', () => isDrawing = true);
+renderer.domElement.addEventListener('mouseup', () => isDrawing = false);
+renderer.domElement.addEventListener('mousemove', (e) => {
+  if (isDrawing) onPointerMove(e);
+});
+renderer.domElement.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  onPointerMove(e.touches[0]);
+});
+
+// UI
+const uiContainer = document.createElement('div');
+uiContainer.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 10px; z-index: 1000;';
+
+const colors = ['#FFD700', '#FF69B4', '#00FFFF', '#7FFF00', '#FF4500', '#800080'];
+colors.forEach(color => {
+  const btn = document.createElement('button');
+  btn.style.cssText = \`width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; background: \${color}; cursor: pointer;\`;
+  btn.addEventListener('click', () => currentColor = color);
+  uiContainer.appendChild(btn);
+});
+
+const clearBtn = document.createElement('button');
+clearBtn.textContent = 'Clear';
+clearBtn.style.cssText = 'padding: 10px 20px; border-radius: 5px; border: none; background: #FF0000; color: white; cursor: pointer;';
+clearBtn.addEventListener('click', () => {
+  particles.length = 0;
+  updateParticleSystem();
+});
+uiContainer.appendChild(clearBtn);
+
+document.body.appendChild(uiContainer);`
   },
   
   'model-showcase': {
@@ -224,9 +280,9 @@ export function registerTemplateTools(server: Server) {
       // Template-specific guidance
       if (templateKey === 'light-painting') {
         steps.push('💡 Light Painting Setup:');
-        steps.push('   • Add particle-system component to <a-scene>');
-        steps.push('   • Add gesture-handler component to <a-scene>');
-        steps.push('   • Include the integration script in your .expanse.json');
+        steps.push('   • Use project_scaffold with template: "three"');
+        steps.push('   • Add the integration script to your main.js');
+        steps.push('   • Ensure scene, camera, and renderer variables are accessible');
         steps.push('   • Test on actual device for touch interactions');
       } else if (templateKey === 'model-showcase') {
         steps.push('💡 Model Showcase Setup:');

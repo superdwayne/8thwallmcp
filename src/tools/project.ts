@@ -316,7 +316,7 @@ export function registerProjectTools(server: Server) {
     async (args: any) => {
       const root = getProjectRoot();
       await ensureDir(root);
-      const tmpl = (args?.template || "aframe") as "aframe" | "three";
+      const tmpl = (args?.template || "three") as "aframe" | "three";
 
       const files: Record<string, string> = tmpl === "aframe"
         ? {
