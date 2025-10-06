@@ -10,7 +10,7 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.5/mcp-8thwall-0.2.5-threejs.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.6/mcp-8thwall-0.2.6-threejs-default.mcpb)
 
 **📦 6.3 MB** • **🎨 Three.js Script Generator** • **📱 AR-Tested**
 
@@ -20,9 +20,20 @@
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.5) 🎨
+### Latest Updates (v0.2.6) 🚀
 
-**NEW: Three.js Script Generator!**
+**Three.js is Now the Default Framework!**
+
+- 🎯 **Three.js Default** - All new projects now default to Three.js instead of A-Frame
+- 🐛 **Mobile Fixes** - Eliminated A-Frame loading errors on mobile devices
+- ✅ **Better Compatibility** - Improved mobile browser support with pure Three.js
+- 🔄 **Auto-Fallback** - Scene tools automatically use Three.js when engine is unknown
+- 📚 **Full Documentation** - Comprehensive migration guide and updated templates
+- ⚡ **No Breaking Changes** - A-Frame still supported via explicit template parameter
+
+### Previous Updates (v0.2.5) 🎨
+
+**Three.js Script Generator**
 
 - 🎯 **`desktop_add_threejs_script`** - Generate battle-tested Three.js scripts for AR interactions
 - ✅ **Proper XR8 Integration** - Handles pipeline initialization, scene access, and camera setup correctly
