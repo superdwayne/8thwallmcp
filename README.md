@@ -10,7 +10,7 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.7/mcp-8thwall-0.2.7-aframe-safe.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.8/mcp-8thwall-0.2.8-desktop-threejs.mcpb)
 
 **📦 6.3 MB** • **🎨 Three.js Script Generator** • **📱 AR-Tested**
 
@@ -20,9 +20,20 @@
 
 ## ✨ What's New
 
-### Latest Updates (v0.2.7) 🛡️
+### Latest Updates (v0.2.8) 🎯
 
-**AFRAME Safety Checks - Zero Runtime Errors!**
+**CRITICAL: Desktop Uses Three.js ONLY (Not A-Frame!)**
+
+- 🎯 **Documentation Added** - Clear explanation: Desktop = Three.js, NOT A-Frame
+- ✅ **No More Confusion** - A-Frame is only for web projects, not Desktop
+- 📚 **DESKTOP_THREEJS_ONLY.md** - Complete guide to proper Desktop development
+- 🛠️ **Right Tools** - Use `desktop_add_threejs_script` for Desktop projects
+- 🚫 **Stop Using** - Don't use A-Frame components in Desktop (.expanse.json) projects
+- ⚡ **Pure Three.js** - Direct Three.js API usage for all Desktop work
+
+### Previous Updates (v0.2.7) 🛡️
+
+**AFRAME Safety Checks** (for web projects only)
 
 - 🛡️ **Safe AFRAME Registration** - All components now check for AFRAME before registering
 - ⏱️ **Load Event Waiting** - Components wait for window 'load' event before initialization
