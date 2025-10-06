@@ -3,6 +3,21 @@
 // Usage: Add 'gesture-handler' component to your <a-scene>
 // Emits: 'gesture-start', 'gesture-move', 'gesture-end' events
 
+// Safe AFRAME registration
+(function() {
+  console.log('[MCP] Checking AFRAME availability for gesture-handler...');
+  function safeRegister() {
+    if (typeof AFRAME === 'undefined') {
+      console.error('[MCP] AFRAME is not defined. Please add A-Frame script tag.');
+      return false;
+    }
+    console.log('[MCP] AFRAME detected, registering gesture-handler...');
+    return true;
+  }
+  function registerComponent() {
+    if (!safeRegister()) return;
+    try {
+
 AFRAME.registerComponent('gesture-handler', {
   schema: {
     enabled: { type: 'boolean', default: true },
@@ -109,4 +124,18 @@ AFRAME.registerComponent('gesture-handler', {
     this.el.sceneEl.removeEventListener('touchend', this.onTouchEnd);
   }
 });
+
+      console.log('[MCP] gesture-handler registered successfully');
+    } catch (error) {
+      console.error('[MCP] Error registering gesture-handler:', error);
+    }
+  }
+  if (document.readyState === 'complete') {
+    registerComponent();
+  } else {
+    window.addEventListener('load', function() {
+      setTimeout(registerComponent, 100);
+    });
+  }
+})();
 

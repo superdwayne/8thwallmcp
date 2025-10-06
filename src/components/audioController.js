@@ -2,6 +2,21 @@
 // Handles spatial audio playback in AR scenes
 // Usage: Add 'audio-controller' component to an entity
 
+// Safe AFRAME registration
+(function() {
+  console.log('[MCP] Checking AFRAME availability for audio-controller...');
+  function safeRegister() {
+    if (typeof AFRAME === 'undefined') {
+      console.error('[MCP] AFRAME is not defined. Please add A-Frame script tag.');
+      return false;
+    }
+    console.log('[MCP] AFRAME detected, registering audio-controller...');
+    return true;
+  }
+  function registerComponent() {
+    if (!safeRegister()) return;
+    try {
+
 AFRAME.registerComponent('audio-controller', {
   schema: {
     src: { type: 'string', default: '' },
@@ -165,4 +180,18 @@ AFRAME.registerSystem('audio-controller', {
     };
   }
 });
+
+      console.log('[MCP] audio-controller registered successfully');
+    } catch (error) {
+      console.error('[MCP] Error registering audio-controller:', error);
+    }
+  }
+  if (document.readyState === 'complete') {
+    registerComponent();
+  } else {
+    window.addEventListener('load', function() {
+      setTimeout(registerComponent, 100);
+    });
+  }
+})();
 

@@ -2,6 +2,21 @@
 // Simplifies working with physics in AR scenes
 // Usage: Add 'physics-helper' component to entities
 
+// Safe AFRAME registration
+(function() {
+  console.log('[MCP] Checking AFRAME availability for physics-helper...');
+  function safeRegister() {
+    if (typeof AFRAME === 'undefined') {
+      console.error('[MCP] AFRAME is not defined. Please add A-Frame script tag.');
+      return false;
+    }
+    console.log('[MCP] AFRAME detected, registering physics-helper...');
+    return true;
+  }
+  function registerComponent() {
+    if (!safeRegister()) return;
+    try {
+
 AFRAME.registerComponent('physics-helper', {
   schema: {
     type: { type: 'string', default: 'dynamic', oneOf: ['static', 'dynamic', 'kinematic'] },
@@ -163,4 +178,18 @@ AFRAME.registerSystem('physics-helper', {
     // In production, 8th Wall Desktop handles physics
   }
 });
+
+      console.log('[MCP] physics-helper registered successfully');
+    } catch (error) {
+      console.error('[MCP] Error registering physics-helper:', error);
+    }
+  }
+  if (document.readyState === 'complete') {
+    registerComponent();
+  } else {
+    window.addEventListener('load', function() {
+      setTimeout(registerComponent, 100);
+    });
+  }
+})();
 
