@@ -1,8 +1,8 @@
-# Release v0.2.11: Cylinder Geometry Fix
+# Release v0.2.11: Cylinder Geometry Fix + New Primitives
 
-## 🐛 Bug Fix Release
+## 🐛 Bug Fixes + ✨ New Features
 
-This release fixes a critical bug in cylinder geometry creation that caused crashes in 8th Wall Desktop.
+This release fixes a critical bug in cylinder geometry creation and adds support for two new primitive types.
 
 ## What's Fixed
 
@@ -10,6 +10,22 @@ This release fixes a critical bug in cylinder geometry creation that caused cras
 - **Fixed**: Removed incorrect `radiusTop` and `radiusBottom` properties from cylinder geometry
 - **Fixed**: Cylinders now use the correct single `radius` property
 - **Fixed**: Eliminated `TypeError: Cannot read properties of undefined (reading 'toFixed')` error
+
+### Ring Geometry Defaults
+- **Fixed**: Ring `innerRadius` default changed from `0.5` → `0.25`
+- **Fixed**: Ring `outerRadius` default changed from `1` → `0.5`
+- Now matches 8th Wall Desktop defaults
+
+## What's New
+
+### New Primitive Types
+- ✅ **Capsule**: Pill-shaped primitive with `radius` and `height` properties
+- ✅ **Polyhedron**: Multi-faced primitive with `radius` and `faces` properties (4=tetrahedron, 8=octahedron, 12=dodecahedron, 20=icosahedron)
+
+### Color Support
+- Added default colors for new primitives:
+  - Capsule: `#74b9ff` (Light Blue)
+  - Polyhedron: `#55efc4` (Mint Green)
 
 ### Before (Broken)
 ```json
@@ -46,8 +62,10 @@ This release fixes a critical bug in cylinder geometry creation that caused cras
 
 - ✅ Cylinders can now be added without crashes
 - ✅ 8th Wall Desktop properly reads cylinder properties
-- ✅ No breaking changes to other geometry types
-- ✅ Existing projects with correctly formatted cylinders unaffected
+- ✅ Two new primitive types available (capsule, polyhedron)
+- ✅ Ring geometry uses correct default values
+- ✅ All geometry defaults now match 8th Wall Desktop exactly
+- ✅ No breaking changes to existing code
 
 ## Installation
 
@@ -71,6 +89,9 @@ Tested scenarios:
 - ✅ Cylinder geometry validates correctly
 - ✅ No `toFixed` errors in 8th Wall Desktop
 - ✅ Colored materials render correctly with `basic` type
+- ✅ Capsule and polyhedron primitives create successfully
+- ✅ Ring geometry with corrected defaults
+- ✅ All 10 primitive types working: box, sphere, cylinder, cone, circle, plane, torus, ring, capsule, polyhedron
 
 ## Credits
 
