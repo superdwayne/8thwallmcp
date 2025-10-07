@@ -134,8 +134,6 @@ function repairObject(obj: any): any {
     if ('height' in geo) geo.height = ensureNumber(geo.height, 1);
     if ('depth' in geo) geo.depth = ensureNumber(geo.depth, 1);
     if ('radius' in geo) geo.radius = ensureNumber(geo.radius, 0.5);
-    if ('radiusTop' in geo) geo.radiusTop = ensureNumber(geo.radiusTop, 0.5);
-    if ('radiusBottom' in geo) geo.radiusBottom = ensureNumber(geo.radiusBottom, 0.5);
     if ('tube' in geo) geo.tube = ensureNumber(geo.tube, 0.2);
     if ('radialSegments' in geo) geo.radialSegments = ensureNumber(geo.radialSegments, 8);
     if ('widthSegments' in geo) geo.widthSegments = ensureNumber(geo.widthSegments, 32);
@@ -320,8 +318,6 @@ export function registerDesktopTools(server: Server) {
       height: z.number().optional(),
       depth: z.number().optional(),
       radius: z.number().optional(),
-      radiusTop: z.number().optional(),
-      radiusBottom: z.number().optional(),
       tube: z.number().optional(),
       radialSegments: z.number().optional(),
       innerRadius: z.number().optional(),
@@ -371,16 +367,10 @@ export function registerDesktopTools(server: Server) {
           break;
         case "sphere":
           geometry.radius = ensureNumber(args.radius, 0.5);
-          geometry.widthSegments = ensureNumber(args.radialSegments, 32);
-          geometry.heightSegments = ensureNumber(args.radialSegments, 16);
           break;
         case "cylinder":
-          geometry.radiusTop = ensureNumber(args.radiusTop || args.radius, 0.5);
-          geometry.radiusBottom = ensureNumber(args.radiusBottom || args.radius, 0.5);
+          geometry.radius = ensureNumber(args.radius, 0.5);
           geometry.height = ensureNumber(args.height, 1);
-          geometry.radialSegments = ensureNumber(args.radialSegments, 32);
-          geometry.heightSegments = 1;
-          geometry.openEnded = false;
           break;
         case "plane":
           geometry.width = ensureNumber(args.width, 1);
@@ -416,10 +406,24 @@ export function registerDesktopTools(server: Server) {
       const materialTypeInput = args.materialType || "basic";
       const materialType = materialTypeInput.toLowerCase();
       
+      // Default colors per geometry type for better visibility
+      const defaultColors: Record<string, string> = {
+        box: "#ff6b6b",      // Red
+        sphere: "#4ecdc4",   // Teal
+        cylinder: "#45b7d1", // Blue
+        plane: "#96ceb4",    // Green
+        circle: "#ffeaa7",   // Yellow
+        cone: "#fd79a8",     // Pink
+        torus: "#a29bfe",    // Purple
+        ring: "#fab1a0"      // Peach
+      };
+      
+      const defaultColor = defaultColors[args.geometryType] || "#ffffff";
+      
       // Force "basic" type for reliable color rendering
       const material: any = {
         type: "basic",
-        color: ensureColor(args.color, "#ffffff")
+        color: ensureColor(args.color, defaultColor)
       };
       
       // NOTE: Roughness and metalness are NOT supported with basic materials
