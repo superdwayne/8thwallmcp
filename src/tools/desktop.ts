@@ -299,7 +299,7 @@ export function registerDesktopTools(server: Server) {
     "Add a 3D shape to .expanse.json with proper 8th Wall validation",
     {
       name: z.string(),
-      geometryType: z.enum(["box", "sphere", "cylinder", "plane", "circle", "cone", "torus", "ring"]),
+      geometryType: z.enum(["box", "sphere", "cylinder", "plane", "circle", "cone", "torus", "ring", "capsule", "polyhedron"]),
       position: z.array(z.number()).length(3).optional(),
       rotation: z.array(z.number()).length(3).optional(),
       scale: z.array(z.number()).length(3).optional(),
@@ -321,7 +321,9 @@ export function registerDesktopTools(server: Server) {
       tube: z.number().optional(),
       radialSegments: z.number().optional(),
       innerRadius: z.number().optional(),
-      outerRadius: z.number().optional()
+      outerRadius: z.number().optional(),
+      faces: z.number().optional().describe("Number of faces for polyhedron (4=tetrahedron, 8=octahedron, 12=dodecahedron, 20=icosahedron)"),
+      tubularSegments: z.number().optional()
     },
     async (args: any) => {
       const data = await readExpanseJson();
@@ -394,9 +396,17 @@ export function registerDesktopTools(server: Server) {
           geometry.tubularSegments = ensureNumber(args.tubularSegments, 100);
           break;
         case "ring":
-          geometry.innerRadius = ensureNumber(args.innerRadius, 0.5);
-          geometry.outerRadius = ensureNumber(args.outerRadius, 1);
+          geometry.innerRadius = ensureNumber(args.innerRadius, 0.25);
+          geometry.outerRadius = ensureNumber(args.outerRadius, 0.5);
           geometry.thetaSegments = ensureNumber(args.radialSegments, 32);
+          break;
+        case "capsule":
+          geometry.radius = ensureNumber(args.radius, 0.5);
+          geometry.height = ensureNumber(args.height, 1);
+          break;
+        case "polyhedron":
+          geometry.radius = ensureNumber(args.radius, 1);
+          geometry.faces = ensureNumber(args.faces, 4);
           break;
       }
       
