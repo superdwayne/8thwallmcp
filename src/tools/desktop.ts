@@ -425,7 +425,9 @@ export function registerDesktopTools(server: Server) {
         circle: "#ffeaa7",   // Yellow
         cone: "#fd79a8",     // Pink
         torus: "#a29bfe",    // Purple
-        ring: "#fab1a0"      // Peach
+        ring: "#fab1a0",     // Peach
+        capsule: "#74b9ff",  // Light Blue
+        polyhedron: "#55efc4" // Mint Green
       };
       
       const defaultColor = defaultColors[args.geometryType] || "#ffffff";
