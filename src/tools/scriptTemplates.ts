@@ -15,71 +15,39 @@ function generateThreeJSScript(options: {
   const { name, description, addParticles, addTouchHandling } = options;
   
   return `// ${name}
-${description ? `// ${description}\n` : ''}
+${description ? `// ${description}\n` : ''}// ⚠️  IMPORTANT: 8th Wall Desktop already initializes XR8.Threejs.pipelineModule()
+//     DO NOT call XR8.addCameraPipelineModules() with Threejs.pipelineModule() again
+//     or it will reset the camera FOV and cause zoom issues!
+
 console.log('📦 ${name}: Loading...');
 
 // Module state
 let scene = null;
 let camera = null;
+let renderer = null;
 let canvas = null;
 let initialized = false;
 
-// Create the camera pipeline module
-const ${name}Module = {
-  name: '${name.toLowerCase().replace(/\s+/g, '-')}',
-  
-  onStart: ({ canvas: c }) => {
-    console.log('✅ ${name}: onStart called');
-    canvas = c || document.querySelector('canvas');
-  },
-  
-  onAttach: ({ canvas: c }) => {
-    console.log('✅ ${name}: onAttach called');
-    if (!canvas) canvas = c || document.querySelector('canvas');
-  },
-  
-  onUpdate: ({ processCpuResult }) => {
-    // Initialize on first frame
-    if (!initialized) {
-      tryInitialize();
-    }
-    
-    // Update logic here (runs every frame)
-    if (initialized) {
-      // Your per-frame update code
-    }
-  },
-};
-
-// Wait for XR8 to be ready
-window.addEventListener('xrloaded', () => {
-  console.log('✅ XR8 Ready, adding ${name} module...');
-  
-  // Add the Threejs pipeline module + our custom module
-  XR8.addCameraPipelineModules([
-    XR8.Threejs.pipelineModule(),  // Enable Three.js
-    ${name}Module                   // Our custom module
-  ]);
-  
-  console.log('✅ ${name} pipeline module added');
-});
-
 function tryInitialize() {
+  if (initialized) return;
+  
   // Get the xrScene wrapper object
   let xrSceneWrapper;
   try {
     xrSceneWrapper = XR8.Threejs.xrScene();
   } catch (e) {
-    return;
+    return; // Not ready yet
   }
   
   if (!xrSceneWrapper || !xrSceneWrapper.scene || !xrSceneWrapper.camera) {
-    return;
+    return; // Not ready yet
   }
   
   // Extract the REAL Three.js scene and camera from the wrapper
   scene = xrSceneWrapper.scene;
   camera = xrSceneWrapper.camera;
+  renderer = xrSceneWrapper.renderer;
+  canvas = renderer.domElement;
   
   console.log('✅ ${name}: Initialized!');
   console.log('   - Scene:', scene);
@@ -130,6 +98,29 @@ function onMouseDown(e) {
   // Handle mouse events
 }
 ` : ''}
+
+function update() {
+  // Try to initialize on first frame
+  if (!initialized) {
+    tryInitialize();
+  }
+  
+  if (initialized) {
+    // Your per-frame update code here
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Wait for XR8 to be ready
+window.addEventListener('xrloaded', () => {
+  console.log('✅ XR8 Ready, starting ${name}...');
+  
+  // Start update loop (don't re-add pipeline modules!)
+  requestAnimationFrame(update);
+  
+  console.log('✅ ${name} running');
+});
 
 console.log('📦 ${name}: Loaded');
 `;
@@ -222,10 +213,13 @@ export function registerScriptTemplates(server: Server) {
    📁 File: ${path.relative(root, filePath)}${expanseMessage}
    
 💡 This script includes:
-   - Proper XR8.Threejs.pipelineModule() setup
-   - Access to real scene and camera via xrScene().scene / .camera
-   - onUpdate callback for per-frame logic
+   - Safe XR8 initialization (doesn't re-add pipeline modules)
+   - Access to scene and camera via xrScene().scene / .camera
+   - requestAnimationFrame update loop for per-frame logic
    ${args.addTestSphere ? '- Test sphere at 0.5m in front of camera\n   ' : ''}${args.addTouchHandling ? '- Touch/mouse event handling\n   ' : ''}
+⚠️  IMPORTANT: This script does NOT call XR8.addCameraPipelineModules()
+   to avoid resetting camera FOV. It uses the existing scene instead.
+
 🎯 Ready to use in 8th Wall Desktop!`
           }
         ]
