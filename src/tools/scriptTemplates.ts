@@ -31,6 +31,11 @@ let initialized = false;
 function tryInitialize() {
   if (initialized) return;
   
+  // Check if XR8.Threejs.xrScene is available
+  if (!XR8 || !XR8.Threejs || !XR8.Threejs.xrScene) {
+    return; // Not ready yet
+  }
+  
   // Get the xrScene wrapper object
   let xrSceneWrapper;
   try {
@@ -39,6 +44,7 @@ function tryInitialize() {
     return; // Not ready yet
   }
   
+  // Check if the wrapper and its properties exist before destructuring
   if (!xrSceneWrapper || !xrSceneWrapper.scene || !xrSceneWrapper.camera) {
     return; // Not ready yet
   }
