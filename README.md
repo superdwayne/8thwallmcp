@@ -10,7 +10,7 @@
 
 **Download the latest version:**
 
-[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.12/mcp-8thwall-0.2.11.mcpb)
+[![Download AR Creator](https://img.shields.io/badge/Download-AR%20Creator-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMNCAyMEgxMkgyMEwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+)](https://github.com/superdwayne/8thwallmcp/releases/download/v0.2.11/mcp-8thwall-0.2.11-fov-fix.mcpb)
 
 **📦 6.3 MB** • **🎨 Pure Three.js** • **📱 AR-Tested** • **🐛 Bug Fixes**
 
